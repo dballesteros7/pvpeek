@@ -83,12 +83,15 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Help improve PvPeek?")
             .setMessage(
-                "Share anonymous usage stats — which Pokémon you analyse and whether the read " +
-                "succeeded — so we can fix reading errors. No screen content, images, or personal " +
-                "data. You can change this anytime in About & Legal."
+                "Share usage stats that don't identify you by name — which Pokémon you analyse and " +
+                "whether the read succeeded — so we can fix reading errors. No screen content or " +
+                "images are sent. You can change this anytime in About & Legal."
             )
             .setPositiveButton("Allow") { _, _ -> Consent.setAnalytics(this, true) }
             .setNegativeButton("No thanks") { _, _ -> Consent.setAnalytics(this, false) }
+            .setNeutralButton("Privacy policy") { _, _ ->
+                runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(LegalActivity.PRIVACY_URL))) }
+            }
             .setCancelable(false)
             .show()
     }

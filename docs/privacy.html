@@ -21,23 +21,27 @@
   <div class="box">
     <strong>In short:</strong> the contents of your screen — the captured image and the text read
     from it — never leave your phone. PvPeek reads a single frame only when you tap, analyses it
-    entirely on your device, and discards it. It sends anonymous crash reports to help fix bugs and,
-    <strong>only if you opt in</strong>, anonymous usage analytics. This notice is written to comply
-    with major privacy laws, including the EU and UK GDPR, the Swiss FADP, and California's CCPA/CPRA.
+    entirely on your device, and discards it. It sends crash reports to help fix bugs and,
+    <strong>only if you opt in</strong>, usage analytics that don't identify you by name. This notice
+    is written to comply with major privacy laws, including the EU and UK GDPR, the Swiss FADP, and
+    California's CCPA/CPRA.
   </div>
 
   <h2>Who's responsible</h2>
-  <p><strong>Diego Ballesteros</strong>, developer of PvPeek, is responsible for the data described
-  here. For any privacy question or request, contact
-  <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a>.</p>
+  <p>The controller responsible for the data described here is <strong>Diego Ballesteros</strong>,
+  developer of PvPeek, based in <strong>Switzerland</strong>. Contact:
+  <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a>. We are not required to,
+  and have not, appointed a Data Protection Officer. If you are in the EEA or UK, you may also raise
+  any request via the contact above.</p>
 
   <h2>What stays on your phone</h2>
   <p>To analyse a Pokémon, PvPeek captures one frame of your screen (only when you tap) and reads it
-  on your device. The image and the text read from it — including any CP, IVs, and the catch
-  date/location shown on screen — are processed in memory and immediately discarded. They are
-  <strong>never stored, uploaded, or shared</strong>. We don't collect screenshots, screen contents,
-  your location, contacts, photos, or any account. The only screen-derived value that may leave your
-  device is the recognised <em>Pokémon species name</em>, and only if you opt in to analytics below.</p>
+  on your device using on-device text recognition (Google ML Kit, which sends nothing off the
+  device). The image and the text read from it — including any CP, IVs, and the catch date/location
+  shown on screen — are processed in memory and immediately discarded; they are <strong>never
+  stored, uploaded, or shared</strong>. We don't collect screenshots, screen contents, your
+  location, contacts, photos, or any account. The only screen-derived value that may leave your
+  device is the recognised <em>Pokémon species name</em>, and only if you opt in to analytics.</p>
 
   <h2>What we collect, and why</h2>
   <table>
@@ -50,25 +54,35 @@
       off in About &amp; Legal.</td>
     </tr>
     <tr>
-      <td>Anonymous usage analytics (<strong>only if you opt in</strong>) — per analysis:
-      success/failure, where the name was read from, number of types detected, whether CP was read,
-      a device-resolution bucket, the recognised species name, and a Firebase app-instance
-      identifier (Google Analytics for Firebase)</td>
+      <td>Usage analytics (<strong>only if you opt in</strong>) — per analysis: success/failure,
+      where the name was read from, number of types detected, whether CP was read, a
+      device-resolution bucket, the recognised species name, and a Firebase app-instance identifier
+      (Google Analytics for Firebase). These are <strong>pseudonymous</strong>: they don't identify
+      you by name, but the app-instance identifier is a per-install online identifier.</td>
       <td>See what works across devices and improve reading accuracy</td>
-      <td>Your consent (GDPR Art. 6(1)(a)). Off by default; you can withdraw it any time in About
-      &amp; Legal.</td>
+      <td>Your consent (GDPR Art. 6(1)(a)). Off by default; withdraw any time in About &amp; Legal.</td>
     </tr>
   </table>
-  <p>This data is processed on our behalf by <strong>Google</strong> (Firebase) and may be stored on
-  its servers, including in the United States, under appropriate safeguards (the EU Standard
-  Contractual Clauses and the EU–US Data Privacy Framework; a copy is available on request). We
-  <strong>do not sell or share your data</strong> or use it for advertising; advertising identifiers
-  and ad-personalization are disabled. We keep crash data for up to 90 days and analytics data per
-  Firebase's default retention (about 2 months for detailed events), and no longer than needed.</p>
+  <p>This data is processed on our behalf by <strong>Google</strong> (Firebase), acting as our
+  processor / service provider, and may be stored on its servers, including in the United States,
+  under appropriate safeguards — the EU and Swiss Standard Contractual Clauses and the EU–US and
+  Swiss–US Data Privacy Frameworks (a copy is available on request). We minimise what is collected:
+  advertising IDs, the Android ID (SSAID), and ad-personalization are all disabled, and analytics is
+  off until you opt in. We <strong>do not sell or share</strong> your personal information and use it
+  for no advertising. Data in transit is encrypted (HTTPS/TLS). We keep crash data for up to 90 days
+  and analytics data per Firebase's default retention (about 2 months for detailed events), and no
+  longer than needed. We use no cookies.</p>
+
+  <h2>Categories of personal information (for US state-law readers)</h2>
+  <p>The data above falls under two CCPA/CPRA categories: <strong>identifiers</strong> (the Firebase
+  installation / app-instance identifiers) and <strong>internet or device activity</strong> (device
+  model, OS/app version, and the in-app usage events). It is collected <strong>directly from your
+  device</strong> through your use of the app. We do <strong>not</strong> collect sensitive personal
+  information, and we do not sell or share personal information.</p>
 
   <h2>Your choices and rights</h2>
   <p>Analytics is optional and off until you opt in; crash reporting can be switched off — both in
-  <strong>About &amp; Legal</strong> inside the app. Wherever you live, we honour these rights for
+  <strong>About &amp; Legal</strong> in the app. Wherever you live, we honour these rights for
   everyone: to <strong>access</strong> a copy of your data, to <strong>correct</strong>,
   <strong>delete</strong>, or <strong>restrict</strong> its processing, to receive it in a portable
   form, to <strong>object</strong> to processing based on legitimate interests, and to

@@ -57,8 +57,8 @@ class LegalActivity : AppCompatActivity() {
         column.addView(body(
             "What's on your screen never leaves your phone. PvPeek reads a single frame only " +
             "when you tap, analyses it on-device, and never stores or sends the image or your " +
-            "screen's text. It sends anonymous crash reports, and — only if you opt in below — " +
-            "anonymous usage analytics (including the recognised species name)."
+            "screen's text. It sends crash reports, and — only if you opt in below — usage " +
+            "analytics that don't identify you by name (including the recognised species name)."
         ))
         column.addView(Button(this).apply {
             text = "View privacy policy"
@@ -67,7 +67,7 @@ class LegalActivity : AppCompatActivity() {
 
         column.addView(heading("Your data choices"))
         column.addView(Switch(this).apply {
-            text = "Share anonymous usage analytics"
+            text = "Share usage analytics (no name, no screen content)"
             setTextColor(Color.parseColor("#CFCFD4"))
             isChecked = Consent.analyticsGranted(this@LegalActivity)
             setOnCheckedChangeListener { _, checked -> Consent.setAnalytics(this@LegalActivity, checked) }

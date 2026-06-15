@@ -107,6 +107,9 @@ Bundled `gamemaster`/`rankings`/`recommended_moves` freeze in time; GO reshuffle
 - **Data staleness** → Gate 4; until then, a stale-data disclaimer.
 
 ## Pre-public-launch checklist (remaining)
+- [ ] **Host the privacy policy off the public repo** — move the live policy to an external host
+      (own domain `pollera-colora.com` or Firebase Hosting) so contacts/names/EU-rep PII aren't in
+      forks; leave only a placeholder template in-repo; update `LegalActivity.PRIVACY_URL` + listing.
 - [ ] **Play Data Safety form** answers (collects: crash + opt-in analytics; no PII/location).
 - [ ] **Sign the EU-representative mandate** (`private/EU-Representative-Mandate.md`).
 - [ ] **Drop `specialUse`** → consent-at-launch (Gate 2).

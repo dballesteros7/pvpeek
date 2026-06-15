@@ -31,7 +31,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # --- config (override via env) ----------------------------------------------
-FIREBASE_APP_ID="${FIREBASE_APP_ID:-1:212663733929:android:0d40fa051b76a8be9623b8}"
+FIREBASE_APP_ID="${FIREBASE_APP_ID:-1:212663733929:android:e28024371bac6e1e9623b8}"
 TESTER_GROUPS="${TESTER_GROUPS:-friends}"
 RELEASE_NOTES="${RELEASE_NOTES:-Test build $(git rev-parse --short HEAD 2>/dev/null || date +%Y%m%d-%H%M)}"
 

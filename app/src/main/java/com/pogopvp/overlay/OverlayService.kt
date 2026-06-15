@@ -30,14 +30,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlin.math.hypot
 
 /**
- * Persistent floating PvPeek button. It lives on the screen edge as a foreground service. Tapping
- * it captures one frame and analyses the Pokémon; the first tap requests screen-capture
- * consent and the projection is then kept for the whole session. Drag to move, long-press to
- * dismiss.
- *
- * Foreground-service type is `specialUse` while idle (just the ball) and is promoted to
- * `mediaProjection` once the user grants screen capture — Android 14+ requires the
- * mediaProjection type to be present before creating the capture's VirtualDisplay.
+ * Persistent floating PvPeek button, hosted by a `mediaProjection` foreground service.
+ * Screen-capture consent is obtained at launch (MainActivity) and the projection is kept for the
+ * whole session; tapping the button captures one frame and analyses the Pokémon. Drag to move,
+ * drag to the bottom of the screen to dismiss.
  */
 class OverlayService : Service() {
 
@@ -46,26 +42,14 @@ class OverlayService : Service() {
         private const val NOTIF_ID = 42
         private const val EXTRA_CODE = "result_code"
         private const val EXTRA_DATA = "result_data"
-        private const val ACTION_PROJECTION_GRANTED = "projection_granted"
-        private const val ACTION_PROJECTION_DENIED = "projection_denied"
 
-        fun start(ctx: Context) {
-            ContextCompat.startForegroundService(ctx, Intent(ctx, OverlayService::class.java))
-        }
-
-        fun deliverProjection(ctx: Context, resultCode: Int, data: Intent) {
+        /** Started from MainActivity with the MediaProjection consent token (granted at launch). */
+        fun start(ctx: Context, resultCode: Int, data: Intent) {
             ContextCompat.startForegroundService(
                 ctx,
                 Intent(ctx, OverlayService::class.java)
-                    .setAction(ACTION_PROJECTION_GRANTED)
                     .putExtra(EXTRA_CODE, resultCode)
                     .putExtra(EXTRA_DATA, data)
-            )
-        }
-
-        fun projectionDenied(ctx: Context) {
-            ContextCompat.startForegroundService(
-                ctx, Intent(ctx, OverlayService::class.java).setAction(ACTION_PROJECTION_DENIED)
             )
         }
     }
@@ -83,8 +67,6 @@ class OverlayService : Service() {
     private var projection: MediaProjection? = null
     private var capture: ScreenCapture? = null
     private var scanning = false
-    /** A tap is waiting for consent to come back before it can capture. */
-    private var pendingScan = false
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -92,8 +74,6 @@ class OverlayService : Service() {
         super.onCreate()
         Consent.apply(applicationContext) // honour analytics/crash choices
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        startForegroundCompat(idle = true)
-        addBall()
         // Full dex + recommended moves off the main thread; until ready, Species falls back
         // to the mini-dex and moves simply don't show yet.
         Thread {
@@ -102,16 +82,31 @@ class OverlayService : Service() {
         }.start()
     }
 
+    /**
+     * Started with the MediaProjection token obtained at launch. We immediately become a
+     * `mediaProjection` foreground service, wire up capture, and show the floating button.
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            ACTION_PROJECTION_GRANTED -> {
-                val code = intent.getIntExtra(EXTRA_CODE, android.app.Activity.RESULT_CANCELED)
-                intentData(intent)?.let { handleProjectionGranted(code, it) }
-            }
-            ACTION_PROJECTION_DENIED -> {
-                pendingScan = false
-                setBallBusy(false)
-                toast("Screen capture needed to scan")
+        if (projection == null && intent != null) {
+            val code = intent.getIntExtra(EXTRA_CODE, android.app.Activity.RESULT_CANCELED)
+            val data = intentData(intent)
+            if (data != null) {
+                try {
+                    startForegroundCompat()
+                    val mpm = getSystemService(MediaProjectionManager::class.java)
+                    val mp = mpm.getMediaProjection(code, data)
+                    mp.registerCallback(object : MediaProjection.Callback() {
+                        override fun onStop() = stopSelf()
+                    }, main)
+                    projection = mp
+                    capture = ScreenCapture(this, mp)
+                    addBall()
+                } catch (t: Throwable) {
+                    reportCrash("projection", t)
+                    stopSelf()
+                }
+            } else {
+                stopSelf()
             }
         }
         return START_NOT_STICKY
@@ -121,37 +116,7 @@ class OverlayService : Service() {
 
     private fun onBallTapped() {
         if (scanning) return
-        if (capture != null) {
-            doCapture()
-        } else {
-            // First tap: go get screen-capture consent, then auto-capture.
-            pendingScan = true
-            setBallBusy(true)
-            ProjectionRequestActivity.launch(this)
-        }
-    }
-
-    private fun handleProjectionGranted(code: Int, data: Intent) {
-        try {
-            // Android 14: the mediaProjection FGS type must be active BEFORE touching the
-            // MediaProjection APIs, so promote the service first.
-            startForegroundCompat(idle = false)
-            val mpm = getSystemService(MediaProjectionManager::class.java)
-            val mp = mpm.getMediaProjection(code, data)
-            mp.registerCallback(object : MediaProjection.Callback() {
-                override fun onStop() = stopSelf()
-            }, main)
-            projection = mp
-            capture = ScreenCapture(this, mp)
-            if (pendingScan) {
-                pendingScan = false
-                doCapture()
-            }
-        } catch (t: Throwable) {
-            pendingScan = false
-            setBallBusy(false)
-            reportCrash("projection", t)
-        }
+        doCapture()
     }
 
     private fun doCapture() {
@@ -375,25 +340,22 @@ class OverlayService : Service() {
 
     // --- Foreground plumbing ----------------------------------------------
 
-    private fun startForegroundCompat(idle: Boolean) {
+    private fun startForegroundCompat() {
         val mgr = getSystemService(NotificationManager::class.java)
         mgr.createNotificationChannel(
             NotificationChannel(CHANNEL_ID, "PvP Overlay", NotificationManager.IMPORTANCE_LOW)
         )
         val notif: Notification = Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle("PvP Overlay")
+            .setContentTitle("PvPeek")
             .setContentText("Tap the PvPeek button over a Pokémon to analyse it")
             .setSmallIcon(R.drawable.ic_launcher)
             .setOngoing(true)
             .build()
         runCatching {
-            when {
-                !idle && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ->
-                    startForeground(NOTIF_ID, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
-                idle && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE ->
-                    startForeground(NOTIF_ID, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-                else -> startForeground(NOTIF_ID, notif)
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                startForeground(NOTIF_ID, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
+            else
+                startForeground(NOTIF_ID, notif)
         }.onFailure { reportCrash("foreground", it) }
     }
 

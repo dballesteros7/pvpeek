@@ -1,8 +1,10 @@
 package com.pogopvp.overlay
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.media.projection.MediaProjectionManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,18 +20,38 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * One-time launcher: secures the "draw over other apps" permission, then starts the
- * persistent PvPeek button ([OverlayService]) and gets out of the way. Screen-capture consent is
- * NOT requested here — the PvPeek button asks for it on its first tap.
+ * One-time launcher: secures the "draw over other apps" permission and screen-capture consent,
+ * then starts the persistent PvPeek button ([OverlayService]) and gets out of the way. Consent is
+ * requested here at launch, so the service runs as a `mediaProjection` foreground service.
  */
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var projectionManager: MediaProjectionManager
 
     private val notifLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { /* best-effort: the FGS still runs, just without a visible notification */ }
 
+    private val projectionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val data = result.data
+        if (result.resultCode == Activity.RESULT_OK && data != null) {
+            OverlayService.start(this, result.resultCode, data)
+            Toast.makeText(
+                this,
+                "PvPeek is ready — open Pokémon GO and tap the button on an Appraisal screen",
+                Toast.LENGTH_LONG
+            ).show()
+            moveTaskToBack(true)
+        } else {
+            Toast.makeText(this, "Screen-capture permission is needed to scan", Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        projectionManager = getSystemService(MediaProjectionManager::class.java)
 
         val title = TextView(this).apply {
             text = "PvPeek"
@@ -41,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             text =
                 "A floating PvPeek button sits on the edge of your screen. Tap it on a Pokémon's " +
                 "Appraisal to read its IVs and PvP rank.\n\n" +
-                "Your screen is NOT recorded or saved. The first time you tap the button, " +
+                "Your screen is NOT recorded or saved. When you tap Start PvPeek, " +
                 "Android asks for screen-capture permission; after that each tap reads a " +
                 "SINGLE frame — nothing is captured between taps and nothing leaves your phone.\n\n" +
                 "Drag the button to move it. Drag it to the bottom of the screen to close."
@@ -114,12 +136,7 @@ class MainActivity : AppCompatActivity() {
             ).show()
             return
         }
-        OverlayService.start(this)
-        Toast.makeText(
-            this,
-            "PvPeek is ready — open Pokémon GO and tap the button on an Appraisal screen",
-            Toast.LENGTH_LONG
-        ).show()
-        moveTaskToBack(true)
+        // Ask for screen-capture consent now; the result handler starts the overlay service.
+        projectionLauncher.launch(projectionManager.createScreenCaptureIntent())
     }
 }

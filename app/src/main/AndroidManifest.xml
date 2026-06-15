@@ -10,8 +10,6 @@
     <!-- Foreground service is required to hold the MediaProjection session. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-    <!-- Keeps the PvPeek button alive while idle (before screen-capture is granted). -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <!-- Android 13+ needs runtime consent to post the FGS notification. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -40,17 +38,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Transparent helper: requests MediaProjection consent on the first PvPeek button tap
-             and hands the token back to the service. -->
-        <activity
-            android:name=".ProjectionRequestActivity"
-            android:exported="false"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".LegalActivity"
             android:exported="false"
@@ -59,10 +46,6 @@
         <service
             android:name=".OverlayService"
             android:exported="false"
-            android:foregroundServiceType="mediaProjection|specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Persistent floating control that captures one screen frame on demand to analyse a Pokémon for PvP." />
-        </service>
+            android:foregroundServiceType="mediaProjection" />
     </application>
 </manifest>

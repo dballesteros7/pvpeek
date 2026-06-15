@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * One-time launcher: secures the "draw over other apps" permission, then starts the
- * persistent Pokéball ([OverlayService]) and gets out of the way. Screen-capture consent is
- * NOT requested here — the Pokéball asks for it on its first tap.
+ * persistent PvPeek button ([OverlayService]) and gets out of the way. Screen-capture consent is
+ * NOT requested here — the PvPeek button asks for it on its first tap.
  */
 class MainActivity : AppCompatActivity() {
 
@@ -32,26 +32,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val title = TextView(this).apply {
-            text = "PoGo PvP Overlay"
+            text = "PvPeek"
             textSize = 22f
             setTextColor(Color.WHITE)
             setPadding(0, 0, 0, 24)
         }
         val privacy = TextView(this).apply {
             text =
-                "A floating Pokéball sits on the edge of your screen. Tap it on a Pokémon's " +
+                "A floating PvPeek button sits on the edge of your screen. Tap it on a Pokémon's " +
                 "Appraisal to read its IVs and PvP rank.\n\n" +
-                "Your screen is NOT recorded or saved. The first time you tap the Pokéball, " +
+                "Your screen is NOT recorded or saved. The first time you tap the button, " +
                 "Android asks for screen-capture permission; after that each tap reads a " +
                 "SINGLE frame — nothing is captured between taps and nothing leaves your phone.\n\n" +
-                "Drag the Pokéball to move it. Drag it to the bottom of the screen to close."
+                "Drag the button to move it. Drag it to the bottom of the screen to close."
             textSize = 15f
             setTextColor(Color.parseColor("#DDDDDD"))
             setLineSpacing(0f, 1.15f)
             setPadding(0, 0, 0, 36)
         }
         val button = Button(this).apply {
-            text = "Show Pokéball"
+            text = "Start PvPeek"
             setOnClickListener { launchFlow() }
         }
         val legalButton = Button(this).apply {
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         OverlayService.start(this)
         Toast.makeText(
             this,
-            "Pokéball ready — open Pokémon GO and tap it on an Appraisal screen",
+            "PvPeek is ready — open Pokémon GO and tap the button on an Appraisal screen",
             Toast.LENGTH_LONG
         ).show()
         moveTaskToBack(true)

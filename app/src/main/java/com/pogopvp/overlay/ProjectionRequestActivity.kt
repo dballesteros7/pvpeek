@@ -10,7 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 
 /**
  * Invisible, throwaway activity. MediaProjection consent can only be requested from an
- * Activity, so the Pokéball launches this on its first tap: it immediately shows the system
+ * Activity, so the PvPeek button launches this on its first tap: it immediately shows the system
  * screen-capture dialog, forwards the result token to [OverlayService], and finishes.
  */
 class ProjectionRequestActivity : ComponentActivity() {

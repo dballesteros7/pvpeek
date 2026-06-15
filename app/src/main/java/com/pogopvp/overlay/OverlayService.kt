@@ -30,7 +30,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlin.math.hypot
 
 /**
- * Persistent floating Pokéball. It lives on the screen edge as a foreground service. Tapping
+ * Persistent floating PvPeek button. It lives on the screen edge as a foreground service. Tapping
  * it captures one frame and analyses the Pokémon; the first tap requests screen-capture
  * consent and the projection is then kept for the whole session. Drag to move, long-press to
  * dismiss.
@@ -117,7 +117,7 @@ class OverlayService : Service() {
         return START_NOT_STICKY
     }
 
-    // --- Pokéball interactions --------------------------------------------
+    // --- PvPeek button interactions --------------------------------------------
 
     private fun onBallTapped() {
         if (scanning) return
@@ -382,7 +382,7 @@ class OverlayService : Service() {
         )
         val notif: Notification = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("PvP Overlay")
-            .setContentText("Tap the Pokéball over a Pokémon to analyse it")
+            .setContentText("Tap the PvPeek button over a Pokémon to analyse it")
             .setSmallIcon(R.drawable.ic_launcher)
             .setOngoing(true)
             .build()

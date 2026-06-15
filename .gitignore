@@ -6,6 +6,9 @@ build/
 .DS_Store
 captures/
 
+# Private legal documents (contracts, mandates) — never publish
+private/
+
 # Secrets / config that must NOT go in a public repo
 app/google-services.json
 *.jks

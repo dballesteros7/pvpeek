@@ -1,0 +1,15 @@
+.gradle/
+build/
+/local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+
+# Secrets / config that must NOT go in a public repo
+app/google-services.json
+*.jks
+*.keystore
+keystore.properties
+key.properties
+release-keystore-info.txt

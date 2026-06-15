@@ -15,12 +15,12 @@ val keystoreProps = Properties().apply {
 
 android {
     namespace = "com.pogopvp.overlay"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.pvpeek.app"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 23
         versionName = "0.1.4"
     }
@@ -47,6 +47,10 @@ android {
             // Sign only when the keystore is present; otherwise the AAB is unsigned and you
             // must create the upload keystore first (see keystore.properties.example).
             signingConfig = if (keystorePropsFile.exists()) signingConfigs.getByName("release") else null
+            // Bundle native debug symbols (e.g. ML Kit's .so) so Play can symbolicate crashes/ANRs.
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 

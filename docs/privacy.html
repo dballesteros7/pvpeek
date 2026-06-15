@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Privacy Policy — PvPeek</title>
   <style>
-    body { max-width: 720px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.55; color: #222; }
-    h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 1.6em; }
+    body { max-width: 760px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.55; color: #222; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.12rem; margin-top: 1.7em; }
     code { background: #f2f2f2; padding: 1px 5px; border-radius: 4px; }
     .muted { color: #666; font-size: .9rem; }
     .box { background: #f7f7f9; border-left: 4px solid #888; padding: 12px 16px; margin: 16px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: .95rem; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f4; }
   </style>
 </head>
 <body>
@@ -17,62 +20,99 @@
   <p class="muted">Last updated: 15 June 2026</p>
 
   <div class="box">
-    <strong>The short version:</strong> what's on your screen never leaves your phone. The app
-    reads a single screen frame only when you tap the button, analyses it on-device, and never
-    stores or transmits any image or its text. It sends only anonymous crash and usage
-    diagnostics to help fix bugs and improve accuracy.
+    <strong>In short:</strong> what's on your screen never leaves your phone. PvPeek reads a
+    single screen frame only when you tap, analyses it entirely on-device, and never stores or
+    transmits any image or its text. It sends only limited diagnostics (crash reports and
+    anonymous usage events) to help fix bugs and improve accuracy. This notice is provided under
+    Article 13 of the EU General Data Protection Regulation (GDPR).
   </div>
 
-  <h2>What the app does</h2>
-  <p>PvPeek shows a floating button. When you tap it on a Pokémon's Appraisal screen, it
-  captures one frame of your screen, reads the CP, name, IV bars and type on-device, and shows
-  the Pokémon's PvP rank and recommended moves. The captured image is processed in memory and
-  immediately discarded — it is never saved, uploaded, or shared.</p>
+  <h2>1. Who is responsible (data controller)</h2>
+  <p>The controller responsible for processing your personal data is:</p>
+  <p><strong>Diego Ballesteros</strong> (developer of PvPeek)<br />
+  Contact: <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a></p>
+  <p>We have not appointed a Data Protection Officer, as we are not legally required to.</p>
 
-  <h2>Information we do NOT collect</h2>
-  <ul>
-    <li>No screenshots, screen recordings, or any captured image.</li>
-    <li>No text read from your screen (OCR results stay on-device).</li>
-    <li>No precise or coarse location, no contacts, no photos library.</li>
-    <li>No account, sign-in, email, or personal identifiers.</li>
-  </ul>
+  <h2>2. On-device processing — not collected</h2>
+  <p>To analyse a Pokémon, PvPeek captures one frame of your screen (via Android's screen-capture
+  permission, only when you tap) and reads it on your device. The captured image and any text read
+  from it are processed in memory and immediately discarded. They are <strong>never stored,
+  uploaded, transmitted, or shared</strong>. We do not collect screenshots, screen recordings,
+  the contents of your screen, your location, contacts, photos, or any account identifier.</p>
 
-  <h2>Information we do collect (anonymous diagnostics)</h2>
-  <p>Through Google Firebase, the app collects:</p>
-  <ul>
-    <li><strong>Crash diagnostics</strong> (Firebase Crashlytics): stack traces, device model,
-    OS version, and app version, so we can fix crashes.</li>
-    <li><strong>Usage analytics</strong> (Firebase Analytics): for each analysis, a derived event
-    with only these fields — outcome (success/failure), where the name was read from, how many
-    types were detected, whether CP was read, a device-resolution bucket, and the recognised
-    Pokémon species name. This contains <em>no</em> images, screen text, location, or identity.</li>
-  </ul>
+  <h2>3. Personal data we process, purposes, and legal basis</h2>
+  <table>
+    <tr><th>Data</th><th>Purpose</th><th>Legal basis (GDPR Art. 6)</th></tr>
+    <tr>
+      <td>Crash diagnostics — stack traces, device model, OS version, app version, and a Firebase
+      installation identifier (via Firebase Crashlytics)</td>
+      <td>Detect and fix crashes; keep the app stable and secure</td>
+      <td>Legitimate interests — Art. 6(1)(f)</td>
+    </tr>
+    <tr>
+      <td>Anonymous usage events — per analysis: outcome (success/failure), where the name was
+      read from, number of types detected, whether CP was read, a device-resolution bucket, and
+      the recognised Pokémon species name; plus a Firebase app-instance identifier and IP address
+      (via Google Analytics for Firebase)</td>
+      <td>Understand which features and devices work, and improve reading accuracy</td>
+      <td>Legitimate interests — Art. 6(1)(f)</td>
+    </tr>
+  </table>
+  <p><strong>Our legitimate interests</strong> are to diagnose crashes, secure the app, measure
+  whether it reads correctly across devices, and improve it. We have balanced these against your
+  rights and process the minimum data needed. You may object at any time (see section 7).</p>
 
-  <h2>Permissions and why</h2>
-  <ul>
-    <li><strong>Display over other apps</strong> — to show the floating button.</li>
-    <li><strong>Screen capture</strong> — to read a single frame when you tap; never continuous.</li>
-    <li><strong>Notifications</strong> — Android requires a notification for the background service.</li>
-    <li><strong>Internet</strong> — to send the anonymous diagnostics above to Firebase.</li>
-  </ul>
+  <h2>4. Recipients</h2>
+  <p>Diagnostics are processed on our behalf by <strong>Google</strong> (Firebase Crashlytics and
+  Google Analytics for Firebase), acting as our processor. We do not sell your data or share it
+  with any other third party.</p>
 
-  <h2>Third-party services</h2>
-  <p>We use Google Firebase (Crashlytics and Analytics). Their handling of data is governed by
-  Google's Privacy Policy: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.
-  Diagnostic data is retained per Firebase's default retention settings.</p>
+  <h2>5. International transfers</h2>
+  <p>Google may process the above data on servers outside your country, including in the United
+  States. Where data is transferred outside the EEA/UK/Switzerland, Google relies on appropriate
+  safeguards, including the EU Standard Contractual Clauses and the EU–US Data Privacy Framework.
+  See Google's Privacy Policy: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.</p>
 
-  <h2>Children</h2>
-  <p>The app is not directed to children under 13 and does not knowingly collect data from them.</p>
+  <h2>6. Retention</h2>
+  <p>Crash diagnostics are retained by Firebase Crashlytics for up to <strong>90 days</strong>.
+  Analytics data is retained per Firebase's configured retention (by default up to
+  <strong>2 months</strong> for user/event-level data; aggregated reports may be kept longer). We
+  keep personal data no longer than necessary for the purposes above.</p>
 
-  <h2>Changes</h2>
-  <p>We may update this policy; the "last updated" date will change accordingly.</p>
+  <h2>7. Your rights</h2>
+  <p>Under the GDPR you have the right to: <strong>access</strong> your data; request
+  <strong>rectification</strong> or <strong>erasure</strong>; request <strong>restriction</strong>
+  of processing; <strong>data portability</strong>; and to <strong>object</strong> to processing
+  based on our legitimate interests. To exercise any of these, contact us at the address in
+  section 1. Because the diagnostics use device-level identifiers rather than your name, we may
+  ask for information to locate the relevant data.</p>
 
-  <h2>Contact</h2>
-  <p>Questions: <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a></p>
+  <h2>8. Right to complain</h2>
+  <p>You have the right to lodge a complaint with a data protection supervisory authority, in
+  particular in the EU/EEA member state of your residence, place of work, or where an alleged
+  infringement occurred (in Switzerland, the FDPIC).</p>
+
+  <h2>9. Is providing this data required?</h2>
+  <p>No. Providing diagnostics is <strong>not</strong> a statutory or contractual requirement and
+  is not needed to use PvPeek's core features. The app's analysis works regardless; diagnostics
+  only help us maintain and improve it, and you may object to or opt out of them.</p>
+
+  <h2>10. Automated decision-making</h2>
+  <p>We do not carry out automated decision-making or profiling that produces legal or similarly
+  significant effects on you (GDPR Art. 22). The Pokémon analysis is a calculation performed
+  on-device and is not used to make decisions about you.</p>
+
+  <h2>11. Children</h2>
+  <p>PvPeek is not directed to children under 13 (or the applicable age in your country) and we do
+  not knowingly collect their data.</p>
+
+  <h2>12. Changes</h2>
+  <p>We may update this policy; the "last updated" date above will change. Material changes will be
+  reflected in the app.</p>
 
   <hr />
-  <p class="muted">PvPeek is an independent, unofficial tool. It is <strong>not affiliated
-  with, endorsed by, or sponsored by</strong> Niantic, Inc., Nintendo, Game Freak, or The Pokémon
+  <p class="muted">PvPeek is an independent, unofficial tool. It is <strong>not affiliated with,
+  endorsed by, or sponsored by</strong> Niantic, Inc., Nintendo, Game Freak, or The Pokémon
   Company. "Pokémon" and "Pokémon GO" are trademarks of their respective owners. Game data and
   PvP rankings are derived from <a href="https://pvpoke.com">PvPoke</a> (MIT licensed).</p>
 </body>

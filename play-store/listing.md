@@ -57,7 +57,7 @@ Capture on a Flip (1080-wide). Best set, IP-light:
 (The crossed-swords icon is branding, not interactive content.)
 
 ## Target audience & content
-- Target age group: **13+** (not designed for or directed at children under 13)
+- Target age group: **16+** (16–17 and 18+; matches the under-16 privacy policy + GDPR consent age)
 - Appeals to children: No
 
 ## Data safety form (answers)

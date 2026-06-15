@@ -49,7 +49,7 @@ and docs, Calendar, Contacts, Web browsing history, Installed apps, Search histo
 | Privacy policy URL | https://dballesteros7.github.io/pvpeek/privacy.html |
 | Ads — does your app contain ads? | **No** |
 | App access — is all functionality available without special access? | **Yes** (no login/account) |
-| Target audience — age groups | **13–15, 16–17, 18+** (not under 13) |
+| Target audience — age groups | **16–17, 18+** (16 and over; matches the under-16 privacy policy + GDPR consent age) |
 | Does the app appeal to children? | **No** |
 | News app? | **No** |
 | COVID-19 contact tracing / status? | **No** |

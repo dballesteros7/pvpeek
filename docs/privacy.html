@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Privacy Policy — PvPeek</title>
   <style>
-    body { max-width: 760px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.55; color: #222; }
-    h1 { font-size: 1.6rem; } h2 { font-size: 1.12rem; margin-top: 1.7em; }
-    code { background: #f2f2f2; padding: 1px 5px; border-radius: 4px; }
+    body { max-width: 780px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.55; color: #222; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.12rem; margin-top: 1.7em; } h3 { font-size: 1rem; margin-top: 1.2em; }
     .muted { color: #666; font-size: .9rem; }
     .box { background: #f7f7f9; border-left: 4px solid #888; padding: 12px 16px; margin: 16px 0; }
     table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: .95rem; }
@@ -23,15 +22,16 @@
     <strong>In short:</strong> what's on your screen never leaves your phone. PvPeek reads a
     single screen frame only when you tap, analyses it entirely on-device, and never stores or
     transmits any image or its text. It sends only limited diagnostics (crash reports and
-    anonymous usage events) to help fix bugs and improve accuracy. This notice is provided under
-    Article 13 of the EU General Data Protection Regulation (GDPR).
+    anonymous usage events) to help fix bugs and improve accuracy. This notice is written to meet
+    the GDPR (EU), UK GDPR, Swiss FADP, CCPA/CPRA (California) and other US state laws, LGPD
+    (Brazil), PIPEDA (Canada), and the Australian Privacy Principles.
   </div>
 
-  <h2>1. Who is responsible (data controller)</h2>
-  <p>The controller responsible for processing your personal data is:</p>
+  <h2>1. Who is responsible (controller / business)</h2>
   <p><strong>Diego Ballesteros</strong> (developer of PvPeek)<br />
   Contact: <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a></p>
-  <p>We have not appointed a Data Protection Officer, as we are not legally required to.</p>
+  <p>We have not appointed a Data Protection Officer or representative, as we are not legally
+  required to. For any privacy request, use the contact above.</p>
 
   <h2>2. On-device processing — not collected</h2>
   <p>To analyse a Pokémon, PvPeek captures one frame of your screen (via Android's screen-capture
@@ -45,7 +45,7 @@
     <tr><th>Data</th><th>Purpose</th><th>Legal basis (GDPR Art. 6)</th></tr>
     <tr>
       <td>Crash diagnostics — stack traces, device model, OS version, app version, and a Firebase
-      installation identifier (via Firebase Crashlytics)</td>
+      installation identifier (Firebase Crashlytics)</td>
       <td>Detect and fix crashes; keep the app stable and secure</td>
       <td>Legitimate interests — Art. 6(1)(f)</td>
     </tr>
@@ -53,49 +53,89 @@
       <td>Anonymous usage events — per analysis: outcome (success/failure), where the name was
       read from, number of types detected, whether CP was read, a device-resolution bucket, and
       the recognised Pokémon species name; plus a Firebase app-instance identifier and IP address
-      (via Google Analytics for Firebase)</td>
+      (Google Analytics for Firebase)</td>
       <td>Understand which features and devices work, and improve reading accuracy</td>
       <td>Legitimate interests — Art. 6(1)(f)</td>
     </tr>
   </table>
-  <p><strong>Our legitimate interests</strong> are to diagnose crashes, secure the app, measure
-  whether it reads correctly across devices, and improve it. We have balanced these against your
-  rights and process the minimum data needed. You may object at any time (see section 7).</p>
+  <p>Our legitimate interests are to diagnose crashes, secure the app, measure whether it reads
+  correctly across devices, and improve it. You may object/opt out at any time (section 7).</p>
 
-  <h2>4. Recipients</h2>
+  <h2>4. Categories of personal information (CCPA/CPRA framing)</h2>
+  <ul>
+    <li><strong>Identifiers</strong> — device/installation identifiers, app-instance identifier, IP address.</li>
+    <li><strong>Internet/app activity</strong> — the anonymous in-app usage events listed above.</li>
+    <li><strong>Geolocation</strong> — none (we do not collect location; IP is used only for routing/security by our processor).</li>
+    <li><strong>Sensitive personal information</strong> — none collected.</li>
+    <li><strong>Source</strong> — collected directly from your device via the app.</li>
+  </ul>
+  <p>We <strong>do not sell</strong> your personal information and <strong>do not share</strong> it
+  for cross-context behavioural advertising, as those terms are defined under the CCPA/CPRA. We
+  have not sold or shared personal information in the preceding 12 months.</p>
+
+  <h2>5. Recipients</h2>
   <p>Diagnostics are processed on our behalf by <strong>Google</strong> (Firebase Crashlytics and
-  Google Analytics for Firebase), acting as our processor. We do not sell your data or share it
-  with any other third party.</p>
+  Google Analytics for Firebase), acting as our processor/service provider. We do not share your
+  data with any other third party.</p>
 
-  <h2>5. International transfers</h2>
+  <h2>6. International transfers</h2>
   <p>Google may process the above data on servers outside your country, including in the United
-  States. Where data is transferred outside the EEA/UK/Switzerland, Google relies on appropriate
-  safeguards, including the EU Standard Contractual Clauses and the EU–US Data Privacy Framework.
-  See Google's Privacy Policy: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.</p>
+  States. For transfers outside the EEA/UK/Switzerland, Google relies on appropriate safeguards
+  including the EU Standard Contractual Clauses and the EU–US Data Privacy Framework. See Google's
+  Privacy Policy: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.</p>
 
-  <h2>6. Retention</h2>
+  <h2>7. Your rights and how to exercise them</h2>
+  <p>Depending on where you live, you may have the rights below. To exercise any of them, contact
+  us at the address in section 1; we will respond within the time required by your local law
+  (generally 30–45 days). We will not discriminate against you for exercising your rights. Because
+  the diagnostics use device-level identifiers rather than your name, we may need information to
+  locate the relevant data, and in some cases may be unable to identify you (in which case some
+  rights may not apply).</p>
+
+  <h3>EEA / UK / Switzerland (GDPR, UK GDPR, FADP)</h3>
+  <p>Access; rectification; erasure; restriction; data portability; and the right to
+  <strong>object</strong> to processing based on legitimate interests. You may lodge a complaint
+  with your local supervisory authority (in the UK, the ICO; in Switzerland, the FDPIC; in the
+  EEA, your national data protection authority).</p>
+
+  <h3>California (CCPA/CPRA)</h3>
+  <p>Right to know/access the categories and specific pieces of personal information collected;
+  right to delete; right to correct; right to opt out of "sale"/"sharing" (we do none); right to
+  limit use of sensitive personal information (we collect none); and the right to
+  non-discrimination. Authorised agents may submit requests on your behalf.</p>
+
+  <h3>Other US states (Virginia, Colorado, Connecticut, Utah, Texas, Oregon, Montana, and others)</h3>
+  <p>Right to access, correct, delete, and obtain a portable copy of your personal data, and to
+  opt out of targeted advertising, sale, and certain profiling (we do none of these). You may
+  appeal a refused request by contacting us.</p>
+
+  <h3>Brazil (LGPD)</h3>
+  <p>Rights to confirmation and access, correction, anonymisation/blocking/deletion, portability,
+  information about sharing, and to object. You may contact the national authority (ANPD).</p>
+
+  <h3>Canada (PIPEDA)</h3>
+  <p>Right to access your personal information and to challenge its accuracy. Where we rely on
+  consent, you may withdraw it. You may complain to the Office of the Privacy Commissioner of Canada.</p>
+
+  <h3>Australia (Privacy Act / APPs)</h3>
+  <p>Right to access and correct your personal information; you may complain to us and then to the
+  Office of the Australian Information Commissioner (OAIC).</p>
+
+  <h3>Other jurisdictions</h3>
+  <p>If your local law grants privacy rights not listed here (e.g. APPI in Japan, PIPL in China,
+  POPIA in South Africa, PDPA in Singapore/Thailand), contact us and we will honour applicable
+  rights.</p>
+
+  <h2>8. Retention</h2>
   <p>Crash diagnostics are retained by Firebase Crashlytics for up to <strong>90 days</strong>.
   Analytics data is retained per Firebase's configured retention (by default up to
   <strong>2 months</strong> for user/event-level data; aggregated reports may be kept longer). We
   keep personal data no longer than necessary for the purposes above.</p>
 
-  <h2>7. Your rights</h2>
-  <p>Under the GDPR you have the right to: <strong>access</strong> your data; request
-  <strong>rectification</strong> or <strong>erasure</strong>; request <strong>restriction</strong>
-  of processing; <strong>data portability</strong>; and to <strong>object</strong> to processing
-  based on our legitimate interests. To exercise any of these, contact us at the address in
-  section 1. Because the diagnostics use device-level identifiers rather than your name, we may
-  ask for information to locate the relevant data.</p>
-
-  <h2>8. Right to complain</h2>
-  <p>You have the right to lodge a complaint with a data protection supervisory authority, in
-  particular in the EU/EEA member state of your residence, place of work, or where an alleged
-  infringement occurred (in Switzerland, the FDPIC).</p>
-
   <h2>9. Is providing this data required?</h2>
-  <p>No. Providing diagnostics is <strong>not</strong> a statutory or contractual requirement and
-  is not needed to use PvPeek's core features. The app's analysis works regardless; diagnostics
-  only help us maintain and improve it, and you may object to or opt out of them.</p>
+  <p>No. Providing diagnostics is not a statutory or contractual requirement and is not needed to
+  use PvPeek's core features. The app's analysis works regardless; diagnostics only help us
+  maintain and improve it, and you may object to or opt out of them.</p>
 
   <h2>10. Automated decision-making</h2>
   <p>We do not carry out automated decision-making or profiling that produces legal or similarly
@@ -103,12 +143,13 @@
   on-device and is not used to make decisions about you.</p>
 
   <h2>11. Children</h2>
-  <p>PvPeek is not directed to children under 13 (or the applicable age in your country) and we do
-  not knowingly collect their data.</p>
+  <p>PvPeek is not directed to children under 13 (or the minimum age in your jurisdiction) and we
+  do not knowingly collect their personal data (consistent with the US COPPA and equivalent laws).
+  If you believe a child has provided data, contact us and we will delete it.</p>
 
   <h2>12. Changes</h2>
-  <p>We may update this policy; the "last updated" date above will change. Material changes will be
-  reflected in the app.</p>
+  <p>We may update this policy; the "last updated" date above will change, and material changes
+  will be reflected in the app.</p>
 
   <hr />
   <p class="muted">PvPeek is an independent, unofficial tool. It is <strong>not affiliated with,

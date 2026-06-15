@@ -1,13 +1,24 @@
 # Roadmap — from friends build to a real Play Store app
 
 ## Where we are today
-A working Android overlay (sideloaded to friends via Firebase App Distribution):
-floating Pokéball → tap on an Appraisal → reads CP, name, IVs (pixel-analysed bars),
+A working Android overlay (sideloaded to friends via Firebase App Distribution): a floating
+**PvPeek button** → tap on an Appraisal → reads CP, name, IVs (pixel-analysed bars),
 disambiguates regional variants by type, ignores nicknames (caught-line name), and shows
 GL/UL rank + % + recommended moveset (with fast-move turns and charge counts). Crashlytics +
-privacy-safe Analytics are wired in. Calibrated for **Galaxy Z Flip 5 / Flip 7** only.
+opt-in Analytics are wired in. Calibrated for **Galaxy Z Flip 5 / Flip 7** only.
 
 Precedent that this *can* live on Play: **Poke Genie** and **Calcy IV** do essentially this.
+
+## Status — Gate 1 (legal/branding) essentially DONE (updated 2026-06-15)
+- ✅ Rebranded to **PvPeek**; new **crown-over-crossed-swords** icon (Colombian colours), all
+  "Pokéball/PoGo" wording removed.
+- ✅ Public repo: **github.com/dballesteros7/pvpeek** (MIT licensed; secrets gitignored).
+- ✅ Privacy policy live (GDPR/CCPA/global, **opt-in consent** for analytics) →
+  https://dballesteros7.github.io/pvpeek/privacy.html ; in-app About & Legal screen.
+- ✅ Contact `privacy@pollera-colora.com`; **EU representative** Juan Carlos Vargas Carrillo
+  (Germany), `privacy-eu@…` — mandate drafted (`private/`, to be signed).
+- ✅ UK: "not available in the UK" notice (geo-restrict at listing instead of a UK rep).
+- ⏳ Remaining in Gate 1: **Play Data Safety form**; sign the EU-rep mandate.
 
 ---
 
@@ -75,26 +86,33 @@ Bundled `gamemaster`/`rankings`/`recommended_moves` freeze in time; GO reshuffle
 3. **Data freshness** (Gate 4) — so it survives seasons.
 4. **Launch** — store listing (screenshots, feature graphic), promote closed → production.
 
-## Open decisions (with a recommendation)
-| Decision | Options | Lean |
-|---|---|---|
-| App name | "PvP IV Overlay" / "Battle IV Scanner" / … | generic + descriptive, no "Pokémon/Go" |
-| Icon | abstract scanner/target glyph | **not** a Pokéball |
-| Monetization | free / one-time / ads | free first; revisit (server costs are tiny) |
-| Data hosting | GitHub raw / GCS bucket / Firebase Hosting | Firebase Hosting (already in the project) |
-| Calibration | auto / per-device profiles / hybrid | hybrid (auto + manual wizard fallback) |
-| Who owns Play account | — | the $25 account + console clicks are the owner's |
+## Decisions (resolved)
+| Decision | Resolution |
+|---|---|
+| App name | **PvPeek** ✅ |
+| Icon | **crown over crossed swords**, Colombian colours ✅ |
+| Data hosting | privacy policy on **GitHub Pages**; gamemaster/rankings still bundled (Gate 4 TBD) |
+| Calibration | hybrid (auto + manual wizard fallback) — Gate 3, not yet built |
+| Monetization | free first |
+| Who owns Play account | the $25 account + console clicks are the owner's (Diego) |
 
 ## Risk register
-- **IP/trademark** → mitigated by rebrand + disclaimer (precedent exists).
-- **`specialUse` rejection** → mitigated by switching to consent-at-launch.
+- **IP/trademark** → mitigated by rebrand + disclaimer (precedent exists). ✅
+- **Fork reuses our policy/PII** → mitigated by the "Forking & reuse" carve-out in README + policy;
+  to fully eliminate, host the policy off the public repo (optional).
+- **`specialUse` rejection** → mitigated by switching to consent-at-launch (still TODO).
 - **Niantic pulls/complains** → inherent, low-likelihood; stay passive, no automation.
 - **Multi-device misreads** → the main quality risk; Gate 3 addresses it; ship with a clear
   "calibrate" fallback.
 - **Data staleness** → Gate 4; until then, a stale-data disclaimer.
 
-## Immediate next actions (when ready)
-1. Pick the name + icon (unblocks the rebrand).
-2. Create the Play developer account ($25) and an internal/closed track.
-3. I generate: release keystore guidance, `bundleRelease` + R8 config, consent-at-launch change,
-   disclaimer/attribution screens, and a privacy-policy draft.
+## Pre-public-launch checklist (remaining)
+- [ ] **Play Data Safety form** answers (collects: crash + opt-in analytics; no PII/location).
+- [ ] **Sign the EU-representative mandate** (`private/EU-Representative-Mandate.md`).
+- [ ] **Drop `specialUse`** → consent-at-launch (Gate 2).
+- [ ] **Release signing** (upload keystore + Play App Signing), **R8/minify**, ship an **AAB**.
+- [ ] **Create the Play account** + a **closed-testing track** (starts the 14-day clock).
+- [ ] **UK geo-restriction** in the Play Console listing.
+- [ ] **Multi-device robustness** (Gate 3) — the big engineering lift before strangers use it.
+- [ ] **Data freshness** (Gate 4) — host + fetch the gamemaster/rankings JSON.
+- [ ] Final privacy review sign-off by Tania / JC.

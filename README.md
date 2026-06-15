@@ -1,4 +1,8 @@
-# PvPeek
+<p align="center">
+  <img src="docs/icon.png" width="128" alt="PvPeek icon — a gold crown over crossed blue and red swords" />
+</p>
+
+<h1 align="center">PvPeek</h1>
 
 An efficient, **on-demand** Android overlay that helps analyse Pokémon for PvP. Tap the
 floating button on a Pokémon's Appraisal screen → it screen-captures one frame, reads the
@@ -12,6 +16,18 @@ recommended moveset. Nothing from your screen ever leaves the device.
 **License:** MIT (see [`LICENSE`](LICENSE)). Game data & PvP rankings derived from
 [PvPoke](https://pvpoke.com) (MIT) — see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 Privacy policy: [`docs/privacy.html`](docs/privacy.html).
+
+## Forking & reuse
+The MIT license covers PvPeek's **source code only**. It does **not** grant any right to reuse
+the name **"PvPeek"**, the icon/branding, the **privacy-policy text**, or the **contact details,
+personal names, and the GDPR Article 27 EU-representative designation** in
+[`docs/privacy.html`](docs/privacy.html). Those identify the official app and its operator, and are
+**not** part of the licensed Software.
+
+**If you fork or redistribute this app, you must replace the privacy policy, all contact details,
+the data-controller and EU-representative information, and the name/branding with your own.** The
+individuals named in this repository are the controller and EU representative for the official
+PvPeek app only, and are **not** the controller or representative for any fork or derivative.
 
 ## Why it's battery-friendly
 The design is **event-driven, not polling**:

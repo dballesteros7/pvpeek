@@ -90,6 +90,7 @@ class OverlayService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Consent.apply(applicationContext) // honour analytics/crash choices
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         startForegroundCompat(idle = true)
         addBall()

@@ -19,11 +19,11 @@
   <p class="muted">Last updated: 15 June 2026</p>
 
   <div class="box">
-    <strong>In short:</strong> what's on your screen never leaves your phone. PvPeek reads a single
-    screen frame only when you tap, analyses it entirely on your device, and never stores or sends
-    any image or its text. It sends only limited diagnostics — crash reports and anonymous usage
-    events — to help us fix bugs and improve accuracy. This notice is written to comply with major
-    privacy laws, including the EU and UK GDPR, the Swiss FADP, and California's CCPA/CPRA.
+    <strong>In short:</strong> the contents of your screen — the captured image and the text read
+    from it — never leave your phone. PvPeek reads a single frame only when you tap, analyses it
+    entirely on your device, and discards it. It sends anonymous crash reports to help fix bugs and,
+    <strong>only if you opt in</strong>, anonymous usage analytics. This notice is written to comply
+    with major privacy laws, including the EU and UK GDPR, the Swiss FADP, and California's CCPA/CPRA.
   </div>
 
   <h2>Who's responsible</h2>
@@ -32,10 +32,12 @@
   <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a>.</p>
 
   <h2>What stays on your phone</h2>
-  <p>To analyse a Pokémon, PvPeek captures one frame of your screen (only when you tap) and reads
-  it on your device. The image and any text read from it are processed in memory and immediately
-  discarded — <strong>never stored, uploaded, or shared</strong>. We don't collect screenshots,
-  screen contents, your location, contacts, photos, or any account.</p>
+  <p>To analyse a Pokémon, PvPeek captures one frame of your screen (only when you tap) and reads it
+  on your device. The image and the text read from it — including any CP, IVs, and the catch
+  date/location shown on screen — are processed in memory and immediately discarded. They are
+  <strong>never stored, uploaded, or shared</strong>. We don't collect screenshots, screen contents,
+  your location, contacts, photos, or any account. The only screen-derived value that may leave your
+  device is the recognised <em>Pokémon species name</em>, and only if you opt in to analytics below.</p>
 
   <h2>What we collect, and why</h2>
   <table>
@@ -43,39 +45,45 @@
     <tr>
       <td>Crash diagnostics — stack traces, device model, OS and app version, and a Firebase
       installation identifier (Firebase Crashlytics)</td>
-      <td>Fix crashes; keep the app stable</td>
-      <td>Our legitimate interest (GDPR Art. 6(1)(f))</td>
+      <td>Diagnose crashes and keep the app stable and secure</td>
+      <td>Our legitimate interest in a stable, crash-free app (GDPR Art. 6(1)(f)). You can turn this
+      off in About &amp; Legal.</td>
     </tr>
     <tr>
-      <td>Anonymous usage events — per analysis: success/failure, where the name was read from,
-      number of types detected, whether CP was read, a device-resolution bucket, the recognised
-      species name, plus an app-instance identifier and IP address (Google Analytics for Firebase)</td>
-      <td>See what works across devices; improve reading accuracy</td>
-      <td>Our legitimate interest (GDPR Art. 6(1)(f))</td>
+      <td>Anonymous usage analytics (<strong>only if you opt in</strong>) — per analysis:
+      success/failure, where the name was read from, number of types detected, whether CP was read,
+      a device-resolution bucket, the recognised species name, and a Firebase app-instance
+      identifier (Google Analytics for Firebase)</td>
+      <td>See what works across devices and improve reading accuracy</td>
+      <td>Your consent (GDPR Art. 6(1)(a)). Off by default; you can withdraw it any time in About
+      &amp; Legal.</td>
     </tr>
   </table>
-  <p>This data is processed on our behalf by <strong>Google</strong> (Firebase) and may be stored
-  on its servers, including in the United States, under standard data-transfer safeguards. We
-  <strong>do not sell or share your data</strong> or use it for advertising. We keep crash data for
-  up to 90 days and usage data per Firebase's default retention (about 2 months for detailed
-  events), and no longer than needed.</p>
+  <p>This data is processed on our behalf by <strong>Google</strong> (Firebase) and may be stored on
+  its servers, including in the United States, under appropriate safeguards (the EU Standard
+  Contractual Clauses and the EU–US Data Privacy Framework; a copy is available on request). We
+  <strong>do not sell or share your data</strong> or use it for advertising; advertising identifiers
+  and ad-personalization are disabled. We keep crash data for up to 90 days and analytics data per
+  Firebase's default retention (about 2 months for detailed events), and no longer than needed.</p>
 
   <h2>Your choices and rights</h2>
-  <p>Wherever you live, we honour these rights for everyone: to <strong>access</strong> a copy of
-  your data, to <strong>correct</strong> or <strong>delete</strong> it, to receive it in a portable
-  form, and to <strong>object to or opt out</strong> of the diagnostics above. Sharing diagnostics
-  is entirely optional — the app's analysis works without it. To make a request, just email us at
-  the address above; we'll respond within the time your local law requires. If you're not happy
-  with our response, you can complain to your local data-protection authority (for example, the ICO
-  in the UK, the FDPIC in Switzerland, or your national authority in the EU). Because these
-  diagnostics use device-level identifiers rather than your name, we may need a little information
-  to find your data.</p>
+  <p>Analytics is optional and off until you opt in; crash reporting can be switched off — both in
+  <strong>About &amp; Legal</strong> inside the app. Wherever you live, we honour these rights for
+  everyone: to <strong>access</strong> a copy of your data, to <strong>correct</strong>,
+  <strong>delete</strong>, or <strong>restrict</strong> its processing, to receive it in a portable
+  form, to <strong>object</strong> to processing based on legitimate interests, and to
+  <strong>withdraw consent</strong> at any time (without affecting prior processing). We will not
+  discriminate against you for exercising any of these rights. To make a request, email us at the
+  address above; we'll respond within the time your local law requires. If you're unhappy with our
+  response, you may complain to your local data-protection authority (for example, the ICO in the
+  UK, the FDPIC in Switzerland, or your national authority in the EU). Because these diagnostics use
+  a device-level identifier rather than your name, we may need a little information to find your data.</p>
 
   <h2>A few more things</h2>
   <p>We don't make automated decisions about you — the Pokémon analysis is just a calculation on
-  your device. PvPeek isn't directed to children under 13, and we don't knowingly collect their
-  data. We may update this policy; the date above will change and material updates will show in the
-  app.</p>
+  your device. PvPeek isn't directed to children under 16 (or the lower minimum age set by your
+  country, which may be as low as 13), and we don't knowingly collect their data. We may update this
+  policy; the date above will change and material updates will show in the app.</p>
 
   <hr />
   <p class="muted">PvPeek is an independent, unofficial tool. It is <strong>not affiliated with,

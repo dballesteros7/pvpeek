@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -55,12 +56,27 @@ class LegalActivity : AppCompatActivity() {
         column.addView(heading("Privacy"))
         column.addView(body(
             "What's on your screen never leaves your phone. PvPeek reads a single frame only " +
-            "when you tap, analyses it on-device, and never stores or sends any image or its " +
-            "text. It sends only anonymous crash and usage diagnostics."
+            "when you tap, analyses it on-device, and never stores or sends the image or your " +
+            "screen's text. It sends anonymous crash reports, and — only if you opt in below — " +
+            "anonymous usage analytics (including the recognised species name)."
         ))
         column.addView(Button(this).apply {
             text = "View privacy policy"
             setOnClickListener { openUrl(PRIVACY_URL) }
+        })
+
+        column.addView(heading("Your data choices"))
+        column.addView(Switch(this).apply {
+            text = "Share anonymous usage analytics"
+            setTextColor(Color.parseColor("#CFCFD4"))
+            isChecked = Consent.analyticsGranted(this@LegalActivity)
+            setOnCheckedChangeListener { _, checked -> Consent.setAnalytics(this@LegalActivity, checked) }
+        })
+        column.addView(Switch(this).apply {
+            text = "Send crash reports"
+            setTextColor(Color.parseColor("#CFCFD4"))
+            isChecked = Consent.crashEnabled(this@LegalActivity)
+            setOnCheckedChangeListener { _, checked -> Consent.setCrash(this@LegalActivity, checked) }
         })
 
         column.addView(heading("Open-source licenses"))

@@ -14,6 +14,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -71,6 +72,25 @@ class MainActivity : AppCompatActivity() {
             setBackgroundColor(Color.parseColor("#15161A"))
             addView(column)
         })
+
+        Consent.apply(this)
+        maybeAskAnalyticsConsent()
+    }
+
+    /** First-run opt-in for anonymous analytics (off until the user agrees). */
+    private fun maybeAskAnalyticsConsent() {
+        if (Consent.analyticsAsked(this)) return
+        AlertDialog.Builder(this)
+            .setTitle("Help improve PvPeek?")
+            .setMessage(
+                "Share anonymous usage stats — which Pokémon you analyse and whether the read " +
+                "succeeded — so we can fix reading errors. No screen content, images, or personal " +
+                "data. You can change this anytime in About & Legal."
+            )
+            .setPositiveButton("Allow") { _, _ -> Consent.setAnalytics(this, true) }
+            .setNegativeButton("No thanks") { _, _ -> Consent.setAnalytics(this, false) }
+            .setCancelable(false)
+            .show()
     }
 
     private fun launchFlow() {

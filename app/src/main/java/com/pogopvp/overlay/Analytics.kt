@@ -27,6 +27,7 @@ object Analytics {
         frame: String,
         species: String?
     ) {
+        if (!Consent.analyticsGranted(context)) return // opt-in only
         runCatching {
             val params = Bundle().apply {
                 putString("outcome", outcome)

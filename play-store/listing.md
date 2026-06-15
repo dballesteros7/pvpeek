@@ -16,41 +16,40 @@ Phone screenshots still needed — see below.
 | Privacy policy | https://dballesteros7.github.io/pvpeek/privacy.html |
 
 ## Short description (≤80 chars)
-> PvP IVs, Great/Ultra League rank, and best moves — one tap, all on your device.
+
+```
+PvP IVs, Great/Ultra League rank, and best moves — one tap, all on your device.
+```
 
 ## Full description (≤4000 chars)
-> PvPeek reads a Pokémon's PvP potential in one tap — no typing stats into a website.
->
-> A small floating button sits on the edge of your screen. Open a Pokémon's Appraisal, tap the
-> button, and PvPeek instantly shows you everything you need for Great League and Ultra League:
->
-> • IVs — read directly from the appraisal bars
-> • Great League & Ultra League rank — out of 4096, with how close it is to the #1 spread
-> • Recommended moveset — the best fast move (with its turn count) and charged moves (with how
->   many fast moves are needed to fire each)
->
-> It handles the tricky cases for you:
-> • Tells regional variants apart by type (e.g. Galarian vs normal forms)
-> • Reads the real species name even if you've nicknamed your Pokémon
->
-> PRIVATE BY DESIGN
-> Everything runs on your device. PvPeek captures a single screen frame only when you tap — the
-> image and its text are analysed in memory and never stored, uploaded, or shared. Nothing from
-> your screen ever leaves your phone. Optional, anonymous diagnostics help us fix bugs and improve
-> accuracy, and you can switch them on or off anytime.
->
-> HOW TO USE
-> 1. Open PvPeek and grant the on-screen permissions.
-> 2. Switch to the game and open a Pokémon's Appraisal.
-> 3. Tap the floating button — your IVs, rank and moves appear.
-> 4. Drag the button to move it, or drag it to the bottom of the screen to close.
->
-> PvP data and rankings are derived from PvPoke.
->
-> —
-> PvPeek is an independent, unofficial tool. It is not affiliated with, endorsed by, or sponsored
-> by Niantic, Nintendo, Game Freak, or The Pokémon Company. "Pokémon" and "Pokémon GO" are
-> trademarks of their respective owners.
+
+```
+PvPeek reads a Pokémon's PvP potential in one tap — no typing stats into a website.
+
+A small floating button sits on the edge of your screen. Open a Pokémon's Appraisal, tap the button, and PvPeek instantly shows you everything you need for Great League and Ultra League:
+
+• IVs — read directly from the appraisal bars
+• Great League & Ultra League rank — out of 4096, with how close it is to the #1 spread
+• Recommended moveset — the best fast move (with its turn count) and charged moves (with how many fast moves are needed to fire each)
+
+It handles the tricky cases for you:
+• Tells regional variants apart by type (e.g. Galarian vs normal forms)
+• Reads the real species name even if you've nicknamed your Pokémon
+
+PRIVATE BY DESIGN
+Everything runs on your device. PvPeek captures a single screen frame only when you tap — the image and its text are analysed in memory and never stored, uploaded, or shared. Nothing from your screen ever leaves your phone. Optional, anonymous diagnostics help us fix bugs and improve accuracy, and you can switch them on or off anytime.
+
+HOW TO USE
+1. Open PvPeek and grant the on-screen permissions.
+2. Switch to the game and open a Pokémon's Appraisal.
+3. Tap the floating button — your IVs, rank and moves appear.
+4. Drag the button to move it, or drag it to the bottom of the screen to close.
+
+PvP data and rankings are derived from PvPoke.
+
+—
+PvPeek is an independent, unofficial tool. It is not affiliated with, endorsed by, or sponsored by Niantic, Nintendo, Game Freak, or The Pokémon Company. "Pokémon" and "Pokémon GO" are trademarks of their respective owners.
+```
 
 ## Phone screenshots (TODO — min 2, up to 8)
 Capture on a Flip (1080-wide). Best set, IP-light:

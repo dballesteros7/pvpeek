@@ -111,7 +111,7 @@ class LegalActivity : AppCompatActivity() {
         const val REPO_URL = "https://github.com/dballesteros7/pvpeek"
 
         private val LICENSES = """
-            PvPeek — MIT License, Copyright (c) 2026 Diego Ballesteros.
+            PvPeek — MIT License, Copyright (c) 2026 Diego Alfonso Ballesteros Villamizar.
 
             Game data, types, move data, and PvP rankings are derived from PvPoke
             (pvpoke.com), used under the MIT License, Copyright (c) 2019 pvpoke:

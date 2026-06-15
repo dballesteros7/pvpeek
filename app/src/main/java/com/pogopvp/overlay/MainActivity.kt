@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             text = "Show Pokéball"
             setOnClickListener { launchFlow() }
         }
+        val legalButton = Button(this).apply {
+            text = "About & Legal"
+            setOnClickListener { startActivity(Intent(this@MainActivity, LegalActivity::class.java)) }
+        }
         val column = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
@@ -61,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             addView(title)
             addView(privacy)
             addView(button)
+            addView(legalButton)
         }
         setContentView(ScrollView(this).apply {
             setBackgroundColor(Color.parseColor("#15161A"))

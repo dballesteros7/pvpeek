@@ -43,6 +43,11 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <activity
+            android:name=".LegalActivity"
+            android:exported="false"
+            android:label="About PvPeek" />
+
         <service
             android:name=".OverlayService"
             android:exported="false"

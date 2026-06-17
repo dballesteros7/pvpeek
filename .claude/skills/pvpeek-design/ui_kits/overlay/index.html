@@ -1,0 +1,158 @@
+<!-- @dsCard group="Overlay" viewport="900x812" name="Overlay — verdict over a game" subtitle="Tap to scan → verdict card · drag the button to dismiss" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html,body{margin:0;background:#0b0c0f;font-family:var(--font-body);color:var(--text-primary)}
+  #root{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:40px;padding:26px;flex-wrap:wrap}
+  .hint{max-width:240px;color:var(--text-secondary);font-size:14px;line-height:1.5}
+  .hint h1{font-family:var(--font-display);font-size:22px;color:var(--white);margin:0 0 10px}
+  .hint .pv{color:var(--gold)}
+  .hint ol{padding-left:18px;margin:14px 0 0}
+  .hint li{margin-bottom:8px}
+  .kbd{font-family:var(--font-mono);font-size:12px;background:var(--surface-raised);border:1px solid var(--border-default);border-radius:4px;padding:1px 6px;color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="../shared/PhoneFrame.jsx"></script>
+<script type="text/babel" src="BusyBackground.jsx"></script>
+<script type="text/babel" src="FloatingButton.jsx"></script>
+<script type="text/babel" src="DismissTarget.jsx"></script>
+<script type="text/babel" src="VerdictCard.jsx"></script>
+<script type="text/babel">
+const { useState, useRef } = React;
+const DEFAULT_POS = { x: 296, y: 360 };
+
+function App() {
+  const [mode, setMode] = useState('idle');     // idle | scanning | verdict
+  const [pos, setPos] = useState(DEFAULT_POS);
+  const [dragging, setDragging] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const drag = useRef({ active: false, moved: false, sx: 0, sy: 0, ox: 0, oy: 0 });
+  const screenRef = useRef(null);
+
+  const armed = dragging && pos.y > 560;
+
+  function onPointerDown(e) {
+    e.preventDefault();
+    drag.current = { active: true, moved: false, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y };
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+  function onPointerMove(e) {
+    const d = drag.current; if (!d.active) return;
+    const dx = e.clientX - d.sx, dy = e.clientY - d.sy;
+    if (Math.abs(dx) + Math.abs(dy) > 6) { d.moved = true; setDragging(true); }
+    if (d.moved) {
+      const nx = Math.max(8, Math.min(296, d.ox + dx));
+      const ny = Math.max(44, Math.min(660, d.oy + dy));
+      setPos({ x: nx, y: ny });
+    }
+  }
+  function onPointerUp() {
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+    const d = drag.current; d.active = false;
+    if (!d.moved) {
+      // a tap → scan then compact verdict peek
+      setMode('scanning');
+      setTimeout(() => setMode('compact'), 950);
+    } else {
+      const wasArmed = pos.y > 560;
+      setDragging(false);
+      if (wasArmed) {
+        setHidden(true);
+        setPos(DEFAULT_POS);
+        setTimeout(() => setHidden(false), 1600);
+      } else {
+        // snap to nearest horizontal edge
+        setPos(p => ({ ...p, x: p.x < 148 ? 8 : 296 }));
+      }
+    }
+  }
+
+  return (
+    <>
+      <div className="hint">
+        <h1><span className="pv">PvP</span>eek overlay</h1>
+        <p>The verdict is an <b>expandable bottom sheet</b>, so it never fully hides the game.</p>
+        <ol>
+          <li><b>Tap</b> the button → it scans, then a <b>compact peek</b> appears at the bottom — game still visible above it.</li>
+          <li>Tap <b>details / the chevron</b> to expand for IV bars, ranks &amp; moveset. The scrim fades out toward the top, so the game stays partly visible.</li>
+          <li>Tap the chevron again to collapse, or × to dismiss. <b>Drag</b> the button to an edge, or to the bottom target to hide.</li>
+        </ol>
+      </div>
+
+      <PhoneFrame bg="#1b6b4a">
+        <div ref={screenRef} style={{ position: 'absolute', inset: 0 }}>
+          <BusyBackground />
+
+          {/* floating button (hidden while the verdict sheet is open) */}
+          {!hidden && mode !== 'compact' && mode !== 'expanded' && (
+            <div style={{
+              position: 'absolute', left: pos.x, top: pos.y, zIndex: 35,
+              touchAction: 'none',
+              transition: dragging ? 'none' : 'left var(--dur-base) var(--ease-spring), top var(--dur-base) var(--ease-spring)',
+            }} onPointerDown={onPointerDown}>
+              <FloatingButton state={mode === 'scanning' ? 'scanning' : 'idle'} />
+            </div>
+          )}
+
+          {/* drag-to-dismiss target */}
+          {dragging && <DismissTarget visible armed={armed} />}
+
+          {/* scanning sweep tint */}
+          {mode === 'scanning' && (
+            <div style={{ position:'absolute', inset:0, zIndex:20, background:'linear-gradient(180deg,rgba(91,157,255,0) 0%,rgba(91,157,255,0.18) 50%,rgba(91,157,255,0) 100%)', animation:'pp-sweep 0.95s var(--ease-out)' }} />
+          )}
+
+          {/* verdict bottom sheet — compact peek or expanded detail */}
+          {(mode === 'compact' || mode === 'expanded') && (
+            <>
+              {/* partial scrim: only present when expanded, and fades out toward the TOP so the game stays visible up there. Tap to collapse. */}
+              {mode === 'expanded' && (
+                <div onClick={() => setMode('compact')} style={{
+                  position: 'absolute', inset: 0, zIndex: 36,
+                  background: 'linear-gradient(to top, rgba(8,9,12,0.86) 38%, rgba(8,9,12,0.45) 68%, rgba(8,9,12,0) 100%)',
+                  WebkitMaskImage: 'linear-gradient(to top, #000 55%, transparent 100%)',
+                  backdropFilter: 'blur(2px)',
+                  animation: 'pp-fade var(--dur-base) var(--ease-out)',
+                }} />
+              )}
+              {/* the sheet, anchored to the bottom; grows upward when expanded */}
+              <div style={{
+                position: 'absolute', left: 0, right: 0, bottom: 18, zIndex: 39,
+                display: 'flex', justifyContent: 'center',
+                animation: 'pp-rise var(--dur-base) var(--ease-out)',
+              }}>
+                <VerdictCard
+                  expanded={mode === 'expanded'}
+                  onToggle={() => setMode(mode === 'expanded' ? 'compact' : 'expanded')}
+                  onClose={() => setMode('idle')}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </PhoneFrame>
+
+      <style>{`
+        @keyframes pp-sweep { from { opacity:0; transform:translateY(-30%);} 50%{opacity:1;} to { opacity:0; transform:translateY(40%);} }
+        @keyframes pp-fade { from { opacity:0;} to { opacity:1;} }
+        @keyframes pp-rise { from { opacity:0; transform:translateY(16px);} to { opacity:1; transform:translateY(0);} }
+      `}</style>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

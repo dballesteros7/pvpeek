@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PvPeek — Color tokens (Android port of tokens/colors.css from the design system).
+  Dark-theme-first: a slate/navy base with a Colombian-heritage accent palette
+  (gold, blue, red) used sparingly for emphasis. Keep this in sync with the skill's
+  tokens/colors.css. Semantic aliases live in Brand.kt for programmatic use.
+-->
+<resources>
+    <!-- Slate / navy base ramp (surfaces, deepest → lightest) -->
+    <color name="slate_1000">#0E0F12</color>
+    <color name="slate_900">#15161A</color>
+    <color name="slate_850">#1A1C22</color>
+    <color name="slate_800">#1F222A</color>
+    <color name="slate_750">#262B36</color>
+    <color name="slate_700">#2E3440</color>
+    <color name="slate_600">#3A424F</color>
+    <color name="slate_500">#4B5563</color>
+    <color name="slate_400">#6B7280</color>
+    <color name="slate_300">#9AA3B2</color>
+    <color name="slate_200">#C5CBD6</color>
+    <color name="slate_100">#E6E9F0</color>
+    <color name="white_">#F7F9FC</color>
+
+    <!-- Brand: Colombian heritage -->
+    <color name="gold">#F4C430</color>
+    <color name="gold_bright">#FCD116</color>
+    <color name="gold_deep">#C8920A</color>
+    <color name="blue">#003893</color>
+    <color name="blue_accent">#2E6BE6</color>
+    <color name="blue_bright">#5B9DFF</color>
+    <color name="red">#CE1126</color>
+    <color name="red_bright">#FF4D5E</color>
+
+    <!-- Rank-tier scale (verdict ranking semantics) -->
+    <color name="tier_perfect">#FCD116</color>
+    <color name="tier_great">#38D996</color>
+    <color name="tier_good">#5B9DFF</color>
+    <color name="tier_fair">#9AA3B2</color>
+    <color name="tier_weak">#6B7280</color>
+
+    <!-- Move semantics -->
+    <color name="move_fast">#5B9DFF</color>
+    <color name="move_charged">#C77DFF</color>
+
+    <!-- Semantic aliases -->
+    <color name="bg_app">#15161A</color>
+    <color name="bg_elevated">#1F222A</color>
+    <color name="surface_card">#262B36</color>
+    <color name="surface_inset">#1A1C22</color>
+    <color name="surface_raised">#2E3440</color>
+
+    <color name="text_primary">#F7F9FC</color>
+    <color name="text_secondary">#9AA3B2</color>
+    <color name="text_tertiary">#6B7280</color>
+    <color name="text_disabled">#4B5563</color>
+    <color name="text_on_gold">#1A1405</color>
+
+    <!-- Overlay scrim — verdict card backdrop over arbitrary game art -->
+    <color name="scrim_overlay">#D10A0B0E</color>
+    <color name="scrim_status">#0E0F12</color>
+</resources>

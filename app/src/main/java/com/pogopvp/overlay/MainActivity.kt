@@ -3,14 +3,14 @@ package com.pogopvp.overlay
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.TypedValue
 import android.view.Gravity
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -53,45 +53,66 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         projectionManager = getSystemService(MediaProjectionManager::class.java)
 
-        val title = TextView(this).apply {
-            text = "PvPeek"
-            textSize = 22f
-            setTextColor(Color.WHITE)
-            setPadding(0, 0, 0, 24)
+        fun pad(v: Int) = Brand.dp(this, v)
+
+        // Brand mark — the crown-swords logo (same asset as the launcher icon).
+        val logo = ImageView(this).apply {
+            setImageResource(R.drawable.ic_icon)
+            val s = pad(76)
+            layoutParams = LinearLayout.LayoutParams(s, s)
         }
-        val privacy = TextView(this).apply {
-            text =
-                "A floating PvPeek button sits on the edge of your screen. Tap it on a Pokémon's " +
-                "Appraisal to read its IVs and PvP rank.\n\n" +
-                "Your screen is NOT recorded or saved. When you tap Start PvPeek, " +
-                "Android asks for screen-capture permission; after that each tap reads a " +
-                "SINGLE frame — nothing is captured between taps and nothing leaves your phone.\n\n" +
-                "Drag the button to move it. Drag it to the bottom of the screen to close."
-            textSize = 15f
-            setTextColor(Color.parseColor("#DDDDDD"))
-            setLineSpacing(0f, 1.15f)
-            setPadding(0, 0, 0, 36)
+        val title = Brand.heading(this, "PvPeek", 34f).apply {
+            gravity = Gravity.CENTER
         }
-        val button = Button(this).apply {
-            text = "Start PvPeek"
-            setOnClickListener { launchFlow() }
+        val tagline = TextView(this).apply {
+            text = "Glance · Verdict · Done."
+            typeface = Brand.display(this@MainActivity, 600)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            setTextColor(Brand.gold)
+            letterSpacing = 0.06f
+            gravity = Gravity.CENTER
         }
-        val legalButton = Button(this).apply {
-            text = "About & Legal"
-            setOnClickListener { startActivity(Intent(this@MainActivity, LegalActivity::class.java)) }
+        val privacy = Brand.bodyText(
+            this,
+            "A floating PvPeek button sits on the edge of your screen. Tap it on a " +
+                "creature's Appraisal to read its IVs and PvP rank in under two seconds.\n\n" +
+                "Your screen is never recorded or saved. When you tap Start PvPeek, Android " +
+                "asks for screen-capture permission; after that each tap reads a single frame — " +
+                "nothing is captured between taps and nothing leaves your phone.\n\n" +
+                "Drag the button to move it. Drag it to the bottom of the screen to close.",
+        ).apply { gravity = Gravity.START }
+        val privacyPromise = Brand.overline(this, "On-device · Nothing leaves your phone", Brand.textSecondary).apply {
+            gravity = Gravity.CENTER
         }
+        val startButton = Brand.button(this, "Start PvPeek", primary = true) { launchFlow() }
+        val legalButton = Brand.button(this, "About & Legal", primary = false) {
+            startActivity(Intent(this@MainActivity, LegalActivity::class.java))
+        }
+
+        fun LinearLayout.addSpaced(view: android.view.View, topDp: Int, fullWidth: Boolean = false) {
+            val lp = LinearLayout.LayoutParams(
+                if (fullWidth) LinearLayout.LayoutParams.MATCH_PARENT
+                else LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            ).apply { topMargin = pad(topDp) }
+            addView(view, lp)
+        }
+
         val column = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setBackgroundColor(Color.parseColor("#15161A"))
-            setPadding(48, 96, 48, 96)
-            addView(title)
-            addView(privacy)
-            addView(button)
-            addView(legalButton)
+            setBackgroundColor(Brand.bgApp)
+            setPadding(pad(28), pad(56), pad(28), pad(48))
+            addSpaced(logo, 0)
+            addSpaced(title, 20)
+            addSpaced(tagline, 8)
+            addSpaced(privacy, 28, fullWidth = true)
+            addSpaced(privacyPromise, 24, fullWidth = true)
+            addSpaced(startButton, 28, fullWidth = true)
+            addSpaced(legalButton, 12, fullWidth = true)
         }
         setContentView(ScrollView(this).apply {
-            setBackgroundColor(Color.parseColor("#15161A"))
+            setBackgroundColor(Brand.bgApp)
             addView(column)
         })
 

@@ -1,0 +1,5 @@
+A faster, cleaner PvPeek:
+• Refreshed dark HUD design — tier-graded IVs and league ranks at a glance
+• Sharper verdict card with the recommended moveset
+• New app icon
+• Stability and accuracy improvements

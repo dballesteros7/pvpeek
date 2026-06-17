@@ -16,3 +16,10 @@ app/google-services.json
 keystore.properties
 key.properties
 release-keystore-info.txt
+
+# Play Store service-account key + fastlane run artifacts
+fastlane/play-store-key.json
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/README.md
+**/.fastlane/

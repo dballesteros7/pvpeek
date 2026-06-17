@@ -1,12 +1,12 @@
 package com.pogopvp.overlay
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
-import android.widget.Button
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Switch
@@ -19,75 +19,76 @@ class LegalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        fun pad(v: Int) = Brand.dp(this, v)
+
         val column = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#15161A"))
-            setPadding(48, 80, 48, 80)
+            setBackgroundColor(Brand.bgApp)
+            setPadding(pad(24), pad(40), pad(24), pad(40))
         }
 
-        fun heading(text: String) = TextView(this).apply {
-            this.text = text
-            textSize = 18f
-            setTextColor(Color.WHITE)
-            setPadding(0, 36, 0, 10)
+        fun add(view: View, topDp: Int) {
+            column.addView(view, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            ).apply { topMargin = pad(topDp) })
         }
 
-        fun body(text: String) = TextView(this).apply {
-            this.text = text
-            textSize = 14f
-            setTextColor(Color.parseColor("#CFCFD4"))
-            setLineSpacing(0f, 1.15f)
-        }
+        // Overlines act as section headings in the display font.
+        fun section(label: String) = add(Brand.overline(this, label), 28)
+        fun body(text: String) = Brand.bodyText(this, text, sizeSp = 14f)
 
-        column.addView(TextView(this).apply {
-            text = "PvPeek"
-            textSize = 24f
-            setTextColor(Color.WHITE)
-        })
-        column.addView(body(versionString()))
+        fun switchRow(label: String, checked: Boolean, onChange: (Boolean) -> Unit) =
+            Switch(this).apply {
+                text = label
+                typeface = Brand.body(this@LegalActivity, 500)
+                setTextColor(Brand.textSecondary)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                isChecked = checked
+                setPadding(0, pad(8), 0, pad(8))
+                setOnCheckedChangeListener { _, value -> onChange(value) }
+            }
 
-        column.addView(heading("Disclaimer"))
-        column.addView(body(
+        add(Brand.heading(this, "PvPeek", 26f), 0)
+        add(TextView(this).apply {
+            text = versionString()
+            typeface = Brand.mono(this@LegalActivity, 500)
+            setTextColor(Brand.textTertiary)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+        }, 6)
+
+        section("Disclaimer")
+        add(body(
             "PvPeek is an independent, unofficial tool. It is not affiliated with, endorsed " +
             "by, or sponsored by Niantic, Nintendo, Game Freak, or The Pokémon Company. " +
             "\"Pokémon\" and \"Pokémon GO\" are trademarks of their respective owners."
-        ))
+        ), 10)
 
-        column.addView(heading("Privacy"))
-        column.addView(body(
+        section("Privacy")
+        add(body(
             "What's on your screen never leaves your phone. PvPeek reads a single frame only " +
             "when you tap, analyses it on-device, and never stores or sends the image or your " +
             "screen's text. It sends crash reports, and — only if you opt in below — usage " +
             "analytics that don't identify you by name (including the recognised species name)."
-        ))
-        column.addView(Button(this).apply {
-            text = "View privacy policy"
-            setOnClickListener { openUrl(PRIVACY_URL) }
-        })
+        ), 10)
+        add(Brand.button(this, "View privacy policy", primary = false) { openUrl(PRIVACY_URL) }, 16)
 
-        column.addView(heading("Your data choices"))
-        column.addView(Switch(this).apply {
-            text = "Share usage analytics (no name, no screen content)"
-            setTextColor(Color.parseColor("#CFCFD4"))
-            isChecked = Consent.analyticsGranted(this@LegalActivity)
-            setOnCheckedChangeListener { _, checked -> Consent.setAnalytics(this@LegalActivity, checked) }
-        })
-        column.addView(Switch(this).apply {
-            text = "Send crash reports"
-            setTextColor(Color.parseColor("#CFCFD4"))
-            isChecked = Consent.crashEnabled(this@LegalActivity)
-            setOnCheckedChangeListener { _, checked -> Consent.setCrash(this@LegalActivity, checked) }
-        })
+        section("Your data choices")
+        add(switchRow(
+            "Share usage analytics (no name, no screen content)",
+            Consent.analyticsGranted(this),
+        ) { Consent.setAnalytics(this, it) }, 8)
+        add(switchRow(
+            "Send crash reports",
+            Consent.crashEnabled(this),
+        ) { Consent.setCrash(this, it) }, 4)
 
-        column.addView(heading("Open-source licenses"))
-        column.addView(body(LICENSES))
-        column.addView(Button(this).apply {
-            text = "Source on GitHub"
-            setOnClickListener { openUrl(REPO_URL) }
-        })
+        section("Open-source licenses")
+        add(body(LICENSES), 10)
+        add(Brand.button(this, "Source on GitHub", primary = false) { openUrl(REPO_URL) }, 16)
 
         setContentView(ScrollView(this).apply {
-            setBackgroundColor(Color.parseColor("#15161A"))
+            setBackgroundColor(Brand.bgApp)
             addView(column, LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

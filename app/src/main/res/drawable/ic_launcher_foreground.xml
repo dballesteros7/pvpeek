@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive launcher foreground: the clean crossed-blade mark, scaled to sit inside the
+  central safe zone the launcher mask keeps visible.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:name="mark" android:scaleX="0.82" android:scaleY="0.82" android:pivotX="54" android:pivotY="47">
+        <!-- Blue blade -->
+        <path android:pathData="M47.0,73.2 L79.2,39.7 L86.0,28.0 L74.1,34.4 L39.5,65.4 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient android:type="linear"
+                    android:startX="54" android:startY="28" android:endX="54" android:endY="73">
+                    <item android:offset="0" android:color="#5B9DFF" />
+                    <item android:offset="1" android:color="#003893" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path android:pathData="M31.7,84.8 L43.3,73.6 L38.9,69.2 L27.4,80.3 Z" android:fillColor="#C8920A" />
+        <path android:pathData="M27.4,80.2 a4.4,4.4 0 1,0 0.1,0 Z" android:fillColor="#C8920A" />
+        <path android:pathData="M51.8,81.0 L36.5,65.2 L31.9,60.4 L47.2,76.2 Z" android:fillColor="#C8920A" />
+        <!-- Red blade -->
+        <path android:pathData="M68.5,65.4 L33.9,34.4 L22.0,28.0 L28.8,39.7 L61.0,73.2 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient android:type="linear"
+                    android:startX="54" android:startY="28" android:endX="54" android:endY="73">
+                    <item android:offset="0" android:color="#FF4D5E" />
+                    <item android:offset="1" android:color="#CE1126" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path android:pathData="M80.6,80.3 L69.1,69.2 L64.7,73.6 L76.3,84.8 Z" android:fillColor="#C8920A" />
+        <path android:pathData="M80.6,80.2 a4.4,4.4 0 1,0 0.1,0 Z" android:fillColor="#C8920A" />
+        <path android:pathData="M76.1,60.4 L60.8,76.2 L56.2,81.0 L71.5,65.2 Z" android:fillColor="#C8920A" />
+        <!-- Gold crown -->
+        <path android:pathData="M38,33 L41,18 L47,24 L54,13 L61,24 L67,18 L70,33 Z"
+            android:strokeColor="#C8920A" android:strokeWidth="0.6" android:strokeLineJoin="round">
+            <aapt:attr name="android:fillColor">
+                <gradient android:type="linear"
+                    android:startX="54" android:startY="13" android:endX="54" android:endY="34">
+                    <item android:offset="0" android:color="#FCD116" />
+                    <item android:offset="1" android:color="#E0A800" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path android:pathData="M37,32 H71 V36 H37 Z" android:fillColor="#E0A800" />
+        <path android:pathData="M41,15.5 a2.5,2.5 0 1,0 0.1,0 Z" android:fillColor="#FFE9A8" />
+        <path android:pathData="M54,10 a3,3 0 1,0 0.1,0 Z" android:fillColor="#FFE9A8" />
+        <path android:pathData="M67,15.5 a2.5,2.5 0 1,0 0.1,0 Z" android:fillColor="#FFE9A8" />
+    </group>
+</vector>

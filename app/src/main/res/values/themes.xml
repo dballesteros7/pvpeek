@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PvPeek — app theme. Dark-theme-first HUD utility: always dark, gold primary
+  accent, slate surfaces, Manrope as the default UI font. Based on a Material
+  Components dark baseline so AppCompat activities and Material widgets inherit it.
+-->
+<resources>
+    <style name="Theme.PvPeek" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Brand accents -->
+        <item name="colorPrimary">@color/gold</item>
+        <item name="colorPrimaryVariant">@color/gold_deep</item>
+        <item name="colorOnPrimary">@color/text_on_gold</item>
+        <item name="colorSecondary">@color/blue_accent</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <item name="colorOnSecondary">@color/white_</item>
+
+        <!-- Surfaces -->
+        <item name="android:colorBackground">@color/bg_app</item>
+        <item name="colorSurface">@color/surface_card</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/red_bright</item>
+
+        <!-- Text -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_tertiary</item>
+
+        <!-- System bars -->
+        <item name="android:statusBarColor">@color/slate_1000</item>
+        <item name="android:navigationBarColor">@color/slate_1000</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Default UI font: Manrope (body). Display/mono are applied per-view. -->
+        <item name="android:fontFamily">@font/font_manrope_regular</item>
+        <item name="fontFamily">@font/font_manrope_regular</item>
+
+        <!-- Control accent (switches, checkboxes) -->
+        <item name="colorControlActivated">@color/gold</item>
+    </style>
+</resources>

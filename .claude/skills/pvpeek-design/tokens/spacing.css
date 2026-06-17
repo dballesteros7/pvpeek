@@ -1,0 +1,56 @@
+/* ============================================================
+   PvPeek — Spacing, radius, elevation & motion tokens
+   4px base grid.
+   ============================================================ */
+
+:root {
+  /* Spacing scale */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  32px;
+  --space-8:  40px;
+  --space-9:  48px;
+  --space-10: 64px;
+
+  /* Radius */
+  --radius-xs:   6px;
+  --radius-sm:   8px;
+  --radius-md:   12px;   /* default control */
+  --radius-lg:   16px;   /* cards */
+  --radius-xl:   22px;   /* verdict card / sheets */
+  --radius-full: 999px;
+
+  /* Elevation — tuned for a dark HUD; light, cool shadows + accent glow */
+  --elev-1: 0 1px 2px rgba(0,0,0,0.40);
+  --elev-2: 0 4px 12px rgba(0,0,0,0.45);
+  --elev-3: 0 8px 24px rgba(0,0,0,0.55);
+  /* Verdict overlay floats above game art — strong, wide shadow */
+  --elev-overlay: 0 16px 48px rgba(0,0,0,0.70), 0 2px 8px rgba(0,0,0,0.50);
+  /* Floating action button — adds a faint gold glow for findability */
+  --elev-fab: 0 6px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+  --glow-gold: 0 0 16px rgba(244,196,48,0.35);
+  --glow-accent: 0 0 16px rgba(91,157,255,0.30);
+
+  /* Borders */
+  --border-width: 1px; /* @kind spacing */
+  --border-width-strong: 1.5px; /* @kind spacing */
+
+  /* Motion — fast & snappy for a glanceable HUD */
+  --dur-instant: 90ms; /* @kind other */
+  --dur-fast:    140ms; /* @kind other */
+  --dur-base:    200ms; /* @kind other */
+  --dur-slow:    320ms; /* @kind other */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1); /* @kind other */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* @kind other */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1); /* @kind other */
+
+  /* Layout */
+  --tap-min: 44px; /* @kind spacing */
+  --safe-edge: 16px; /* @kind spacing */
+}

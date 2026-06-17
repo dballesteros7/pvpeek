@@ -1,0 +1,10 @@
+/* PvPeek webfonts — sourced from Google Fonts.
+   NOTE: These are Google-hosted substitutes chosen to match the brand's
+   esports/HUD personality. If you have licensed brand fonts, drop the files
+   in /assets/fonts and replace the @font-face src URLs below.
+
+   - Chakra Petch  → display / headings / brand voice (sharp, technical, gamer)
+   - Manrope       → body / UI text (clean, modern, neutral)
+   - JetBrains Mono → numerics: CP, IVs, ranks, percentages (tabular figures) */
+
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');

@@ -1,0 +1,7 @@
+# fastlane Appfile — identifies the app and the Play service-account key.
+# The package name is the applicationId from app/build.gradle.kts (NOT the namespace).
+package_name("com.pvpeek.app")
+
+# Path to the Google Play service-account JSON key (see fastlane/SETUP.md).
+# Kept out of git; override with the PLAY_STORE_JSON_KEY env var if you store it elsewhere.
+json_key_file(ENV["PLAY_STORE_JSON_KEY"] || "fastlane/play-store-key.json")

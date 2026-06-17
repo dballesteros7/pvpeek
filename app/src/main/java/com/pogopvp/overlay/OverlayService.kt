@@ -7,7 +7,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.graphics.Color
 import android.graphics.PixelFormat
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
@@ -15,7 +14,9 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.text.TextUtils
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -61,7 +62,6 @@ class OverlayService : Service() {
     private var ball: ImageView? = null
     private var ballParams: WindowManager.LayoutParams? = null
     private var card: View? = null
-    private var resultView: TextView? = null
     private var closeTarget: View? = null
 
     private var projection: MediaProjection? = null
@@ -138,7 +138,7 @@ class OverlayService : Service() {
                     try {
                         bitmap.recycle()
                         val base = scan.name?.let { Species.match(it, scan.types) }
-                        finishScan(Analyzer.summarizeFull(scan, iv))
+                        finishVerdict(Analyzer.analyze(scan, iv))
                         Analytics.logAppraise(
                             context = applicationContext,
                             outcome = if (base != null) "ok" else "name_unrecognized",
@@ -158,6 +158,14 @@ class OverlayService : Service() {
         }
     }
 
+    private fun finishVerdict(verdict: Verdict) {
+        scanning = false
+        main.post {
+            setBallBusy(false)
+            showVerdictCard(verdict)
+        }
+    }
+
     private fun finishScan(text: String) {
         scanning = false
         main.post {
@@ -166,8 +174,12 @@ class OverlayService : Service() {
         }
     }
 
+    /** Dim and re-tint the button's gold findability ring to a blue "scanning" cue. */
     private fun setBallBusy(busy: Boolean) = main.post {
-        ball?.alpha = if (busy) 0.45f else 0.9f
+        ball?.apply {
+            alpha = if (busy) 0.6f else 0.95f
+            background = Brand.fabBackground(this@OverlayService, if (busy) Brand.blueBright else Brand.gold)
+        }
     }
 
     // --- Views -------------------------------------------------------------
@@ -175,8 +187,12 @@ class OverlayService : Service() {
     private fun addBall() {
         val sizePx = (resources.displayMetrics.density * 56).toInt()
         val view = ImageView(this).apply {
-            setImageResource(R.drawable.ic_launcher)
-            alpha = 0.9f
+            setImageResource(R.drawable.ic_mark)
+            // Dark radial fill + gold ring = a findable HUD button over bright game art.
+            background = Brand.fabBackground(this@OverlayService, Brand.gold)
+            val p = Brand.dp(this@OverlayService, 9)
+            setPadding(p, p, p, p)
+            alpha = 0.95f
         }
         val params = overlayParams(sizePx, sizePx).apply {
             gravity = Gravity.TOP or Gravity.START
@@ -189,42 +205,245 @@ class OverlayService : Service() {
         ballParams = params
     }
 
-    private fun showCard(text: String) {
-        val existing = resultView
-        if (existing != null) {
-            existing.text = text
-            return
-        }
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.argb(235, 20, 20, 24))
-            setPadding(28, 24, 28, 24)
-        }
-        val tv = TextView(this).apply {
-            this.text = text
-            setTextColor(Color.WHITE)
-            textSize = 13f
-            width = (resources.displayMetrics.density * 200).toInt()
-        }
-        val hint = TextView(this).apply {
-            this.text = "tap to dismiss"
-            setTextColor(Color.argb(150, 255, 255, 255))
-            textSize = 10f
-        }
-        container.addView(tv)
-        container.addView(hint)
-        container.setOnClickListener { removeCard() }
+    /**
+     * True when the platform can blur content behind a window (API 31+, and the user/device
+     * hasn't disabled it). Lets the verdict card use the design system's lighter scrim +
+     * backdrop blur instead of a heavy opaque scrim.
+     */
+    private fun blurBehindSupported(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && windowManager.isCrossWindowBlurEnabled
 
+    /** A simple branded card for status / error messages (mono text + dismiss hint). */
+    private fun showCard(text: String) {
+        val blur = blurBehindSupported()
+        val container = brandedCardContainer(blur)
+        container.addView(TextView(this).apply {
+            this.text = text
+            typeface = Brand.mono(this@OverlayService, 500)
+            setTextColor(Brand.textPrimary)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            setLineSpacing(0f, 1.35f)
+            width = Brand.dp(this@OverlayService, 220)
+        })
+        container.addView(footerRow())
+        attachCard(container, estHeightDp = 120, blur = blur)
+    }
+
+    /**
+     * The hero verdict HUD: identity + CP, then the headline numbers (IV%, each league's
+     * rank + percentile) in tabular mono, tier-coloured via [Brand.tierColor]. Floats over
+     * the game on a strong scrim so it stays legible against arbitrary art.
+     */
+    private fun showVerdictCard(verdict: Verdict) {
+        val blur = blurBehindSupported()
+        val container = brandedCardContainer(blur)
+        container.addView(verdictHeader(verdict))
+        if (verdict.recognized) {
+            container.addView(divider(topDp = 12, bottomDp = 12))
+            container.addView(statRow(verdict))
+            verdict.leagues.firstOrNull { it.moves != null }?.let { container.addView(movesLine(it)) }
+        } else {
+            container.addView(divider(topDp = 12, bottomDp = 10))
+            container.addView(TextView(this).apply {
+                text = "Name not recognised — re-tap on the Appraisal screen."
+                typeface = Brand.body(this@OverlayService, 500)
+                setTextColor(Brand.textSecondary)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            })
+        }
+        container.addView(divider(topDp = 12, bottomDp = 10))
+        container.addView(footerRow())
+        attachCard(container, estHeightDp = if (verdict.recognized) 220 else 150, blur = blur)
+    }
+
+    // --- Verdict card pieces ----------------------------------------------
+
+    private fun brandedCardContainer(blur: Boolean): LinearLayout = LinearLayout(this).apply {
+        orientation = LinearLayout.VERTICAL
+        background = Brand.overlayCardBackground(this@OverlayService, blurred = blur)
+        val ph = Brand.dp(this@OverlayService, 16)
+        val pv = Brand.dp(this@OverlayService, 14)
+        setPadding(ph, pv, ph, pv)
+        elevation = Brand.dp(this@OverlayService, 12).toFloat()
+        setOnClickListener { removeCard() }
+    }
+
+    private fun verdictHeader(v: Verdict): View {
+        val ctx = this
+        val logo = ImageView(this).apply {
+            setImageResource(R.drawable.ic_mark)
+            val s = Brand.dp(ctx, 26)
+            layoutParams = LinearLayout.LayoutParams(s, s).apply { rightMargin = Brand.dp(ctx, 10) }
+        }
+        val nameRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(TextView(ctx).apply {
+                text = v.name
+                typeface = Brand.display(ctx, 700)
+                setTextColor(Brand.textPrimary)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                maxLines = 1
+                ellipsize = TextUtils.TruncateAt.END
+            })
+            if (v.isHundo) addView(hundoBadge())
+        }
+        val cpLine = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.BOTTOM
+            v.cp?.let { cp ->
+                addView(TextView(ctx).apply {
+                    text = cp.toString()
+                    typeface = Brand.mono(ctx, 700)
+                    setTextColor(Brand.textPrimary)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+                })
+                addView(TextView(ctx).apply {
+                    text = " CP"
+                    typeface = Brand.display(ctx, 600)
+                    setTextColor(Brand.textTertiary)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
+                })
+            }
+        }
+        val texts = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            addView(nameRow)
+            if (v.cp != null) addView(cpLine)
+        }
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(logo)
+            addView(texts)
+        }
+    }
+
+    private fun hundoBadge(): View {
+        val ctx = this
+        return TextView(this).apply {
+            text = "HUNDO"
+            typeface = Brand.display(ctx, 700)
+            setTextColor(Brand.textOnGold)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 9f)
+            letterSpacing = 0.1f
+            val ph = Brand.dp(ctx, 6)
+            val pvv = Brand.dp(ctx, 2)
+            setPadding(ph, pvv, ph, pvv)
+            background = Brand.cardBackground(ctx, radiusDp = 999f, fill = Brand.gold, stroke = Brand.gold)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+            ).apply { leftMargin = Brand.dp(ctx, 8) }
+        }
+    }
+
+    /** IV% + each league's rank, tier-coloured, laid out as evenly-weighted mini stats. */
+    private fun statRow(v: Verdict): View {
+        val ctx = this
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.TOP
+        }
+        row.addView(miniStat("IV", "${Math.round(v.ivPercent)}%", Brand.tierColor(v.ivPercent), null))
+        for (lg in v.leagues) {
+            row.addView(statDivider())
+            row.addView(miniStat(
+                lg.label,
+                "#${lg.rank}",
+                Brand.tierColor(lg.percent),
+                String.format("%.1f%% · %d", lg.percent, lg.total),
+            ))
+        }
+        return row
+    }
+
+    private fun miniStat(label: String, value: String, valueColor: Int, sub: String?): View {
+        val ctx = this
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            addView(TextView(ctx).apply {
+                text = label
+                typeface = Brand.display(ctx, 600)
+                setTextColor(Brand.textTertiary)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 9f)
+                letterSpacing = 0.1f
+            })
+            addView(TextView(ctx).apply {
+                text = value
+                typeface = Brand.mono(ctx, 700)
+                setTextColor(valueColor)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                setPadding(0, Brand.dp(ctx, 3), 0, 0)
+            })
+            if (sub != null) addView(TextView(ctx).apply {
+                text = sub
+                typeface = Brand.mono(ctx, 500)
+                setTextColor(Brand.textTertiary)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+                setPadding(0, Brand.dp(ctx, 2), 0, 0)
+            })
+        }
+    }
+
+    private fun statDivider(): View = View(this).apply {
+        layoutParams = LinearLayout.LayoutParams(Brand.dp(this@OverlayService, 1), Brand.dp(this@OverlayService, 30)).apply {
+            leftMargin = Brand.dp(this@OverlayService, 8)
+            rightMargin = Brand.dp(this@OverlayService, 8)
+        }
+        setBackgroundColor(Brand.borderSubtle)
+    }
+
+    private fun movesLine(lg: LeagueStanding): View {
+        val ctx = this
+        return TextView(this).apply {
+            text = "${lg.label} · ${lg.moves}"
+            typeface = Brand.body(ctx, 500)
+            setTextColor(Brand.textSecondary)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
+            setPadding(0, Brand.dp(ctx, 10), 0, 0)
+        }
+    }
+
+    private fun footerRow(): View {
+        val ctx = this
+        return TextView(this).apply {
+            text = "On-device · nothing left your phone · tap to dismiss"
+            typeface = Brand.body(ctx, 400)
+            setTextColor(Brand.textTertiary)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+        }
+    }
+
+    private fun divider(topDp: Int, bottomDp: Int): View = View(this).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, Brand.dp(this@OverlayService, 1),
+        ).apply {
+            topMargin = Brand.dp(this@OverlayService, topDp)
+            bottomMargin = Brand.dp(this@OverlayService, bottomDp)
+        }
+        setBackgroundColor(Brand.borderSubtle)
+    }
+
+    /** Position a finished card near the ball (below it, or above if there's no room) and show it. */
+    private fun attachCard(container: View, estHeightDp: Int, blur: Boolean) {
         val params = overlayParams(
+            Brand.dp(this, 300),
             WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
+            // Backdrop blur behind the card so it floats legibly over arbitrary game art
+            // (design system: scrim + blur). Localised to the card's own bounds.
+            if (blur && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                flags = flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
+                setBlurBehindRadius(Brand.dp(this@OverlayService, 24))
+            }
             val dm = resources.displayMetrics
             val ballSize = (dm.density * 56).toInt()
             val margin = (dm.density * 8).toInt()
-            val cardW = (dm.density * 230).toInt()
-            val estCardH = (dm.density * 150).toInt()
+            val cardW = Brand.dp(this@OverlayService, 300)
+            val estCardH = Brand.dp(this@OverlayService, estHeightDp)
             val bx = ballParams?.x ?: margin
             val by = ballParams?.y ?: 300
             x = bx.coerceIn(margin, (dm.widthPixels - cardW - margin).coerceAtLeast(margin))
@@ -233,15 +452,14 @@ class OverlayService : Service() {
             y = if (belowY + estCardH <= dm.heightPixels) belowY
             else (by - estCardH - margin).coerceAtLeast(margin)
         }
-        windowManager.addView(container, params)
+        removeCard()
+        runCatching { windowManager.addView(container, params) }
         card = container
-        resultView = tv
     }
 
     private fun removeCard() {
         card?.let { runCatching { windowManager.removeView(it) } }
         card = null
-        resultView = null
     }
 
     private fun overlayParams(w: Int, h: Int) = WindowManager.LayoutParams(
@@ -257,13 +475,21 @@ class OverlayService : Service() {
         var startX = 0
         var startY = 0
         var dragging = false
+        var longFired = false
         val slop = resources.displayMetrics.density * 12
+        // Debug-only: long-press renders a sample verdict so the HUD card can be reviewed
+        // without a live game scan. Never armed in release builds.
+        val longPress = Runnable {
+            if (!dragging) { longFired = true; showVerdictCard(sampleVerdict()) }
+        }
         view.setOnTouchListener { v, e ->
             when (e.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     downX = e.rawX; downY = e.rawY
                     startX = params.x; startY = params.y
                     dragging = false
+                    longFired = false
+                    if (isDebuggable) main.postDelayed(longPress, 600)
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -271,6 +497,7 @@ class OverlayService : Service() {
                     val dy = e.rawY - downY
                     if (!dragging && hypot(dx, dy) > slop) {
                         dragging = true
+                        main.removeCallbacks(longPress)
                         showCloseTarget()
                     }
                     if (dragging) {
@@ -282,11 +509,12 @@ class OverlayService : Service() {
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    main.removeCallbacks(longPress)
                     if (dragging) {
                         val close = inCloseZone(e.rawY)
                         hideCloseTarget()
                         if (close) quit() else snapToEdge(v, params)
-                    } else {
+                    } else if (!longFired) {
                         onBallTapped()
                     }
                     true
@@ -295,6 +523,23 @@ class OverlayService : Service() {
             }
         }
     }
+
+    /** True when this is a debuggable build — gates dev-only affordances. */
+    private val isDebuggable: Boolean by lazy {
+        (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    }
+
+    /** A representative verdict for visual review of the HUD card (debug long-press). */
+    private fun sampleVerdict(): Verdict = Verdict(
+        name = "Specimen-12",
+        cp = 1498,
+        ivAtk = 15, ivDef = 15, ivSta = 14,
+        recognized = true,
+        leagues = listOf(
+            LeagueStanding("GREAT", "Great League", 12, 4096, 99.2, 1498, "Quick Jab · Surge Beam / Iron Crash"),
+            LeagueStanding("ULTRA", "Ultra League", 188, 4096, 95.4, 2487, "Quick Jab · Surge Beam / Iron Crash"),
+        ),
+    )
 
     private fun snapToEdge(view: View, params: WindowManager.LayoutParams) {
         val screenW = resources.displayMetrics.widthPixels
@@ -311,11 +556,15 @@ class OverlayService : Service() {
         val size = (resources.displayMetrics.density * 64).toInt()
         val tv = TextView(this).apply {
             text = "✕"
-            setTextColor(Color.WHITE)
-            textSize = 26f
+            typeface = Brand.display(this@OverlayService, 700)
+            setTextColor(Brand.textPrimary)
+            textSize = 24f
             gravity = Gravity.CENTER
-            alpha = 0.7f
-            setBackgroundColor(Color.argb(190, 200, 50, 50))
+            alpha = 0.85f
+            background = Brand.cardBackground(
+                this@OverlayService, radiusDp = 999f,
+                fill = Brand.redBright, stroke = Brand.borderStrong, strokeDp = 1.5f,
+            )
         }
         val p = overlayParams(size, size).apply {
             gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
@@ -348,7 +597,7 @@ class OverlayService : Service() {
         val notif: Notification = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("PvPeek")
             .setContentText("Tap the PvPeek button over a Pokémon to analyse it")
-            .setSmallIcon(R.drawable.ic_launcher)
+            .setSmallIcon(R.drawable.ic_mark)
             .setOngoing(true)
             .build()
         runCatching {

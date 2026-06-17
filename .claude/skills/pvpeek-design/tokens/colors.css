@@ -1,0 +1,88 @@
+/* ============================================================
+   PvPeek — Color tokens
+   Dark-theme-first. Built on a slate/navy base with a Colombian
+   heritage accent palette (gold, blue, red) used sparingly for emphasis.
+   ============================================================ */
+
+:root {
+  /* ---- Slate / navy base ramp (surfaces, from deepest to lightest) ---- */
+  --slate-1000: #0E0F12;
+  --slate-900:  #15161A;   /* app background floor */
+  --slate-850:  #1A1C22;
+  --slate-800:  #1F222A;   /* primary surface */
+  --slate-750:  #262B36;   /* raised surface / verdict card body */
+  --slate-700:  #2E3440;   /* card edge / divider strong */
+  --slate-600:  #3A424F;   /* borders */
+  --slate-500:  #4B5563;
+  --slate-400:  #6B7280;   /* disabled / muted icon */
+  --slate-300:  #9AA3B2;   /* secondary text */
+  --slate-200:  #C5CBD6;
+  --slate-100:  #E6E9F0;
+  --white:      #F7F9FC;
+
+  /* ---- Brand: Colombian heritage ---- */
+  --gold:        #F4C430;  /* primary brand gold (crown) */
+  --gold-bright: #FCD116;  /* flag yellow — peak emphasis */
+  --gold-deep:   #C8920A;  /* pressed / shadow gold */
+  --blue:        #003893;  /* flag blue — deep, brand-only */
+  --blue-accent: #2E6BE6;  /* legible UI blue on dark */
+  --blue-bright: #5B9DFF;  /* highlight blue */
+  --red:         #CE1126;  /* flag red */
+  --red-bright:  #FF4D5E;  /* legible alert red on dark */
+
+  /* ---- Rank-tier scale (verdict ranking semantics) ---- */
+  --tier-perfect: #FCD116; /* 99–100% — gold, "hundo" */
+  --tier-great:   #38D996; /* 95–99%  — green */
+  --tier-good:    #5B9DFF; /* 88–95%  — blue */
+  --tier-fair:    #9AA3B2; /* 75–88%  — slate */
+  --tier-weak:    #6B7280; /* <75%    — muted */
+
+  /* ---- Move semantics ---- */
+  --move-fast:    #5B9DFF; /* fast move accent */
+  --move-charged: #C77DFF; /* charged move accent */
+
+  /* ---- Status / feedback ---- */
+  --success: #38D996;
+  --warning: #F4C430;
+  --danger:  #FF4D5E;
+  --info:    #5B9DFF;
+
+  /* ============================================================
+     Semantic aliases — reference these in components/screens
+     ============================================================ */
+
+  /* Backgrounds & surfaces */
+  --bg-app:        var(--slate-900);
+  --bg-elevated:   var(--slate-800);
+  --surface-card:  var(--slate-750);
+  --surface-inset: var(--slate-850);
+  --surface-raised: var(--slate-700);
+
+  /* Overlay scrim — verdict card backdrop over arbitrary game art */
+  --scrim-overlay: rgba(10, 11, 14, 0.82);
+  --scrim-dialog:  rgba(10, 11, 14, 0.66);
+
+  /* Text */
+  --text-primary:   var(--white);
+  --text-secondary: var(--slate-300);
+  --text-tertiary:  var(--slate-400);
+  --text-disabled:  var(--slate-500);
+  --text-on-gold:   #1A1405;
+  --text-on-accent: #FFFFFF;
+
+  /* Borders / dividers */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-strong:  rgba(255, 255, 255, 0.16);
+  --hairline:       rgba(255, 255, 255, 0.08);
+
+  /* Interactive accents */
+  --accent:         var(--gold);
+  --accent-hover:   var(--gold-bright);
+  --accent-press:   var(--gold-deep);
+  --focus-ring:     rgba(91, 157, 255, 0.55);
+
+  /* Component fills */
+  --fill-ghost-hover: rgba(255, 255, 255, 0.06);
+  --fill-ghost-press: rgba(255, 255, 255, 0.10);
+}

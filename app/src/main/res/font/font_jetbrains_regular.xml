@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JetBrains Mono (numerics) — weight 400, instanced from the variable font. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:fontVariationSettings="'wght' 400"
+        android:font="@font/jetbrains_mono_variable" />
+</font-family>

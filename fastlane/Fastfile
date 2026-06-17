@@ -1,0 +1,69 @@
+# fastlane Fastfile — Play Store automation for PvPeek via `supply`.
+# Run lanes with:  bundle exec fastlane <lane>
+# One-time setup (Ruby + service account): see fastlane/SETUP.md.
+
+opt_out_usage # don't send fastlane analytics — matches PvPeek's privacy-first ethos
+
+default_platform(:android)
+
+AAB_PATH = "app/build/outputs/bundle/release/app-release.aab"
+
+platform :android do
+  # supply always updates a track; point it at one that has a release. The current
+  # build (v24) lives on "internal". Store listing (text/images) is global regardless.
+  LISTING_TRACK = "internal"
+
+  desc "Validate the listing + assets against Play (no changes are uploaded)"
+  lane :validate do
+    upload_to_play_store(
+      track: LISTING_TRACK,
+      validate_only: true,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true # changelogs attach to a build's version code, not the listing
+    )
+  end
+
+  desc "Upload listing text, screenshots, icon & feature graphic only (no binary)"
+  lane :listing do
+    upload_to_play_store(
+      track: LISTING_TRACK,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true, # changelogs go with a build (see :deploy)
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Build a release AAB and upload it (+ changelog) to a track. Defaults: internal, rolled out."
+  lane :deploy do |options|
+    track  = options[:track]  || "internal"
+    status = options[:status] || "completed" # "completed" = live to that track's testers; "draft" = review first
+    gradle(task: "clean")
+    gradle(task: "bundleRelease")
+    upload_to_play_store(
+      aab: AAB_PATH,
+      track: track,
+      release_status: status,
+      skip_upload_changelogs: false, # release notes for this build (changelogs/<versionCode>.txt)
+      skip_upload_metadata: true,    # store listing text already managed by :listing
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Promote the most recent build from one track to another (e.g. internal -> production)"
+  lane :promote do |options|
+    upload_to_play_store(
+      track: options[:from] || "internal",
+      track_promote_to: options[:to] || "production",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

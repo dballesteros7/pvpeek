@@ -1,0 +1,63 @@
+<!-- @dsCard group="Components" viewport="700x360" name="HUD — IV stats, rank, moves" subtitle="The verdict-card readout primitives" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html,body{margin:0;background:var(--bg-elevated);font-family:var(--font-body);color:var(--text-primary)}
+  .wrap{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .grp{display:flex;flex-direction:column;gap:12px}
+  .lbl{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tertiary)}
+  .panel{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:16px}
+  .ivrow{display:flex;gap:18px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { IVStat, RankBadge, MoveChip } = window.PvPeekDesignSystem_53b813;
+function Demo(){
+  return (
+    <div className="wrap">
+      <div className="grp">
+        <div className="lbl">IVStat · ATK / DEF / STA</div>
+        <div className="panel ivrow">
+          <IVStat label="ATK" value={15} />
+          <IVStat label="DEF" value={14} />
+          <IVStat label="STA" value={13} />
+        </div>
+        <div className="panel ivrow">
+          <IVStat label="ATK" value={11} />
+          <IVStat label="DEF" value={8} />
+          <IVStat label="STA" value={6} />
+        </div>
+      </div>
+      <div className="grp">
+        <div className="lbl">RankBadge · tiers</div>
+        <div className="grp">
+          <RankBadge league="Great League" rank={12} total={4096} percent={99.2} />
+          <RankBadge league="Ultra League" rank={188} total={4096} percent={95.4} />
+          <RankBadge league="Master League" rank={902} total={4096} percent={78.0} />
+        </div>
+      </div>
+      <div className="grp" style={{gridColumn:'1 / -1'}}>
+        <div className="lbl">MoveChip · fast & charged</div>
+        <div className="row" style={{display:'flex',gap:12,flexWrap:'wrap'}}>
+          <div style={{width:200}}><MoveChip kind="fast" name="Quick Jab" count={3} recommended /></div>
+          <div style={{width:200}}><MoveChip kind="charged" name="Surge Beam" count={4} recommended /></div>
+          <div style={{width:200}}><MoveChip kind="charged" name="Iron Crash" count={6} /></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

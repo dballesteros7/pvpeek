@@ -7,6 +7,18 @@ opt_out_usage # don't send fastlane analytics — matches PvPeek's privacy-first
 default_platform(:android)
 
 AAB_PATH = "app/build/outputs/bundle/release/app-release.aab"
+GRADLE_FILE = "app/build.gradle.kts"
+
+# Increment versionCode in build.gradle.kts so every deploy is a distinct release
+# (Google rejects a reused versionCode). Leaves the bump uncommitted for you to commit.
+def bump_version_code
+  contents = File.read(GRADLE_FILE)
+  current = contents[/versionCode\s*=\s*(\d+)/, 1].to_i
+  bumped = current + 1
+  File.write(GRADLE_FILE, contents.sub(/versionCode\s*=\s*\d+/, "versionCode = #{bumped}"))
+  UI.success("Bumped versionCode #{current} -> #{bumped}")
+  bumped
+end
 
 platform :android do
   # supply always updates a track; point it at one that has a release. The current
@@ -41,6 +53,7 @@ platform :android do
   lane :deploy do |options|
     track  = options[:track]  || "internal"
     status = options[:status] || "completed" # "completed" = live to that track's testers; "draft" = review first
+    bump_version_code unless options[:bump] == false # pass bump:false to reuse the current code
     gradle(task: "clean")
     gradle(task: "bundleRelease")
     upload_to_play_store(

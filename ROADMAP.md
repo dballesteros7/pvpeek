@@ -1,7 +1,7 @@
 # Roadmap — from friends build to a real Play Store app
 
 ## Where we are today
-A working Android overlay (sideloaded to friends via Firebase App Distribution): a floating
+A working Android overlay (shipped to testers via Play Console internal testing): a floating
 **PvPeek button** → tap on an Appraisal → reads CP, name, IVs (pixel-analysed bars),
 disambiguates regional variants by type, ignores nicknames (caught-line name), and shows
 GL/UL rank + % + recommended moveset (with fast-move turns and charge counts). Crashlytics +

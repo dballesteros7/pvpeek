@@ -40,7 +40,7 @@ version mismatch), repair it with `gem install bundler` and re-run `bundle insta
 > Homebrew's Ruby is first on your `PATH` (it is by default in this shell).
 
 ### 2. Google Play service account (headless auth) — ⬜ the one step left
-This is the Play analog of the Firebase service account in `release-android.sh`.
+A service account lets fastlane authenticate to Google Play headlessly (no browser login).
 
 1. In **Play Console → Setup → API access**, link a Google Cloud project (or create one).
 2. Create a **service account** in Google Cloud → grant it access back in the Play Console
